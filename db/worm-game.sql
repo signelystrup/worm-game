@@ -8,6 +8,12 @@ CREATE TABLE IF NOT EXISTS public."character"
     id integer NOT NULL,
     weapon_id integer NOT NULL,
     archetype_id integer NOT NULL,
+    name text NOT NULL,
+    hp integer NOT NULL,
+    vision integer NOT NULL,
+    move_speed integer NOT NULL DEFAULT 1,
+    hostile boolean NOT NULL,
+    sprite_id integer NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -22,6 +28,7 @@ CREATE TABLE IF NOT EXISTS public.inventory
 CREATE TABLE IF NOT EXISTS public.stage
 (
     id integer NOT NULL,
+    name text NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -29,24 +36,35 @@ CREATE TABLE IF NOT EXISTS public.tile
 (
     id integer NOT NULL,
     effect_id integer,
+    name text NOT NULL,
+    sprite_id integer NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.effect
 (
     id integer NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.weapon
 (
     id integer NOT NULL,
+    sprite_id integer,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.item
 (
     id integer NOT NULL,
+    sprite_id integer NOT NULL,
+    effect_id integer,
+    name text NOT NULL,
+    description text NOT NULL,
+    effect_duration integer NOT NULL DEFAULT 0,
+    effect_strength integer NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -61,6 +79,7 @@ CREATE TABLE IF NOT EXISTS public.archetype
 (
     id integer NOT NULL,
     weapon_id integer NOT NULL,
+    sprite_id integer,
     PRIMARY KEY (id)
 );
 
@@ -71,17 +90,11 @@ CREATE TABLE IF NOT EXISTS public.account
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.item_effect
-(
-    item_id integer NOT NULL,
-    effect_id integer NOT NULL,
-    PRIMARY KEY (item_id, effect_id)
-);
-
 CREATE TABLE IF NOT EXISTS public.weapon_effect
 (
     weapon_id integer NOT NULL,
     effect_id integer NOT NULL,
+    sprite_id integer NOT NULL,
     PRIMARY KEY (weapon_id, effect_id)
 );
 
@@ -101,10 +114,13 @@ CREATE TABLE IF NOT EXISTS public.character_talent
 
 CREATE TABLE IF NOT EXISTS public.character_stage
 (
+    id integer NOT NULL,
     character_id integer NOT NULL,
     stage_id integer NOT NULL,
     completed boolean NOT NULL DEFAULT false,
-    PRIMARY KEY (character_id, stage_id)
+    start_x integer NOT NULL DEFAULT 0,
+    start_y integer NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.stage_tile
@@ -112,6 +128,23 @@ CREATE TABLE IF NOT EXISTS public.stage_tile
     id integer NOT NULL,
     stage_id integer NOT NULL,
     tile_id integer NOT NULL,
+    world_x integer NOT NULL,
+    world_y integer NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sprite
+(
+    id integer NOT NULL,
+    path text NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.dialogue
+(
+    id integer NOT NULL,
+    content text NOT NULL,
+    character_stage_id integer NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -126,6 +159,14 @@ ALTER TABLE IF EXISTS public."character"
 ALTER TABLE IF EXISTS public."character"
     ADD CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
     REFERENCES public.archetype (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."character"
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -155,6 +196,38 @@ ALTER TABLE IF EXISTS public.tile
     NOT VALID;
 
 
+ALTER TABLE IF EXISTS public.tile
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.weapon
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.item
+    ADD CONSTRAINT effect_fk FOREIGN KEY (effect_id)
+    REFERENCES public.effect (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.item
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
 ALTER TABLE IF EXISTS public.talent
     ADD CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
     REFERENCES public.archetype (id) MATCH SIMPLE
@@ -171,25 +244,17 @@ ALTER TABLE IF EXISTS public.archetype
     NOT VALID;
 
 
+ALTER TABLE IF EXISTS public.archetype
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
 ALTER TABLE IF EXISTS public.account
     ADD CONSTRAINT character_fk FOREIGN KEY (character_id)
     REFERENCES public."character" (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.item_effect
-    ADD CONSTRAINT effect_fk FOREIGN KEY (effect_id)
-    REFERENCES public.effect (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.item_effect
-    ADD CONSTRAINT item_fk FOREIGN KEY (item_id)
-    REFERENCES public.item (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -206,6 +271,14 @@ ALTER TABLE IF EXISTS public.weapon_effect
 ALTER TABLE IF EXISTS public.weapon_effect
     ADD CONSTRAINT effect_fk FOREIGN KEY (effect_id)
     REFERENCES public.effect (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.weapon_effect
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    REFERENCES public.sprite (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -270,6 +343,14 @@ ALTER TABLE IF EXISTS public.stage_tile
 ALTER TABLE IF EXISTS public.stage_tile
     ADD CONSTRAINT tile_fk FOREIGN KEY (tile_id)
     REFERENCES public.tile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.dialogue
+    ADD CONSTRAINT character_stage_fk FOREIGN KEY (character_stage_id)
+    REFERENCES public.character_stage (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
