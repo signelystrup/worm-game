@@ -1,7 +1,16 @@
 import express from 'express'
 
 
+//keep routes and packages seperate blocks 
+import exampleRoutes from './routes/example-routes.js'
+
 const app = express()
+
+
+//routes routes get loaded in here 
+app.use(exampleRoutes)
+
+
 //the standard / route send as a javascript object 
 // which is automatically sent as json
 app.get('/', (req, res) => {
@@ -25,3 +34,4 @@ app.listen(PORT, () => {
   console.log('Server is running on port:', PORT)
 })
 
+//to start server type 'npm start'
