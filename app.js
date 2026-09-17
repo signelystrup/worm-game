@@ -1,9 +1,11 @@
+//import express application its like springboot or axum
 import express from 'express'
 
 
 //keep routes and packages seperate blocks 
 import exampleRoutes from './routes/example-routes.js'
 
+//we store the express application in app so we can add to it. like routes and middlware. 
 const app = express()
 
 
