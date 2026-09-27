@@ -185,7 +185,7 @@ ALTER TABLE IF EXISTS worm_game_db.account
 
 
 ALTER TABLE IF EXISTS worm_game_db.archetype
-    ADD CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    ADD CONSTRAINT sprite_fk FOREIGN KEY (hat_sprite_id)
     REFERENCES worm_game_db.sprite (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
