@@ -1,10 +1,17 @@
 services:
   postgres:
+    build: .
     image: postgres:18
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: demo
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_cron
+      - -c
+      - cron.database_name=demo
 
   pgadmin:
     image: dpage/pgadmin4:latest
