@@ -1,36 +1,18 @@
+SET SEARCH_PATH = worm_game_db;
+
 CREATE OR REPLACE PROCEDURE get_stat_for_character(
-    IN character_id NUMERIC,
+    IN char_id integer,
     IN stat_name TEXT
 )
-AS
-  
-BEGIN 
-    SELECT "value" 
-    FROM stat
-    WHERE level_up_bonus.character_id = character_id && stat.name = stat_name;
-END;
-
-
-   SELECT "value" 
-    FROM worm_game_db.stat
-    WHERE worm_game_db.level_up_bonus.character_id = 1 && worm_game_db.stat.name = 'hp';
-    
-
-get_total_levels
-get_stats
-
-get_max_life
-get_current_life
-
-find_path
-
-delete_player
-update_high_score
-
-
-CREATE OR REPLACE PROCEDURE pr_name() 
 LANGUAGE plpgsql
-AS $BODY$ $BODY$;
+AS
+$BODY$
+	BEGIN
+		SELECT stat."value", stat.id, stat.name, level_up_bonus.character_id  FROM stat 
+		INNER JOIN level_up_bonus ON stat.id = level_up_bonus.stat_id
+		WHERE stat.name = stat_name AND level_up_bonus.character_id = char_id;
+	END
+$BODY$
+;
 
-CREATE OR REPLACE PROCEDURE get_hp_in_hearts(IN hp NUMERIC)
-
+CALL get_stat_for_character(1, 'hp');
