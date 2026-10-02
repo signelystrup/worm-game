@@ -11,6 +11,10 @@ BEGIN
 END;
 
 
+   SELECT "value" 
+    FROM worm_game_db.stat
+    WHERE worm_game_db.level_up_bonus.character_id = 1 && worm_game_db.stat.name = 'hp';
+    
 
 get_total_levels
 get_stats
