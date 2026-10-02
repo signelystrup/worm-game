@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS worm_game_db."character"
     archetype_id integer NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,
     hostile boolean NOT NULL,
+    playable boolean NOT NULL,
     sprite_id integer NOT NULL,
     CONSTRAINT character_pkey PRIMARY KEY (id)
 );

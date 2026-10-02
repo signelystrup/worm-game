@@ -5,7 +5,7 @@ Weapons and items can inflict effects.
 
 **talent:** Permanent, passive abilities besides default stats. (eg. TOUGH, RICH, NIGHT_VISION)
 
-
+---
 
 **level:** skill-level of a character. When levelling up, the character gets a bonus-stat and a new talent. 
 
