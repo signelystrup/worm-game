@@ -3,20 +3,79 @@
 DROP SCHEMA IF EXISTS worm_game_db CASCADE;
 CREATE SCHEMA worm_game_db;
 
-BEGIN;
-
-
-CREATE TABLE IF NOT EXISTS worm_game_db.account
+CREATE TABLE IF NOT EXISTS worm_game_db.effect
 (
     id integer NOT NULL,
-    character_id integer NOT NULL,
-    username text NOT NULL,
-    password text NOT NULL,
-    CONSTRAINT account_pkey PRIMARY KEY (id),
-    CONSTRAINT character_fk FOREIGN KEY (character_id)
-        REFERENCES worm_game_db."character" (id)
+    name text COLLATE pg_catalog."default" NOT NULL,
+    description text COLLATE pg_catalog."default" NOT NULL,
+    duration integer NOT NULL,
+    strength integer NOT NULL,
+    CONSTRAINT effect_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS worm_game_db.sprite
+(
+    id integer NOT NULL,
+    path text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT sprite_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.stage
+(
+    id integer NOT NULL,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT stage_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.stat
+(
+    id integer NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
+    value integer NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.item
+(
+    id integer NOT NULL,
+    sprite_id integer NOT NULL,
+    effect_id integer,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    description text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT item_pkey PRIMARY KEY (id),
+    CONSTRAINT effect_fk FOREIGN KEY (effect_id)
+    	REFERENCES worm_game_db.effect (id) ,
+    CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    	REFERENCES worm_game_db.sprite (id) 
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.tile
+(
+    id integer NOT NULL,
+    effect_id integer,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    sprite_id integer NOT NULL,
+    CONSTRAINT tile_pkey PRIMARY KEY (id),
+    CONSTRAINT effect_fk FOREIGN KEY (effect_id)
+    	REFERENCES worm_game_db.effect (id) ,
+    CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    	REFERENCES worm_game_db.sprite (id) 
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.weapon
+(
+    id integer NOT NULL,
+    sprite_id integer NOT NULL,
+    damage integer NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
+    CONSTRAINT weapon_pkey PRIMARY KEY (id),
+    CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    	REFERENCES worm_game_db.sprite (id) 
+);
+
+-- ARCHETYPE 
 CREATE TABLE IF NOT EXISTS worm_game_db.archetype
 (
     id integer NOT NULL,
@@ -28,10 +87,35 @@ CREATE TABLE IF NOT EXISTS worm_game_db.archetype
   	CONSTRAINT sprite_fk FOREIGN KEY (hat_sprite_id)
         REFERENCES worm_game_db.sprite (id),
   	CONSTRAINT weapon_fk FOREIGN KEY (weapon_id)
-    REFERENCES worm_game_db.weapon (id)
+    	REFERENCES worm_game_db.weapon (id)
 
 );
 
+CREATE TABLE IF NOT EXISTS worm_game_db.talent
+(
+    id integer NOT NULL,
+    archetype_id integer NOT NULL,
+    CONSTRAINT talent_pkey PRIMARY KEY (id),
+    CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
+    	REFERENCES worm_game_db.archetype (id)
+);
+
+-- JOIN TABLE
+CREATE TABLE IF NOT EXISTS worm_game_db.weapon_effect
+(
+    weapon_id integer NOT NULL,
+    effect_id integer NOT NULL,
+    sprite_id integer NOT NULL,
+    CONSTRAINT weapon_effect_pkey PRIMARY KEY (weapon_id, effect_id),
+    CONSTRAINT effect_fk FOREIGN KEY (effect_id)
+    	REFERENCES worm_game_db.effect (id) ,
+    CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
+    	REFERENCES worm_game_db.sprite (id) ,
+    CONSTRAINT weapon_fk FOREIGN KEY (weapon_id)
+    	REFERENCES worm_game_db.weapon (id)
+);
+
+-- CHARACTER
 CREATE TABLE IF NOT EXISTS worm_game_db."character"
 (
     id integer NOT NULL,
@@ -53,6 +137,28 @@ CREATE TABLE IF NOT EXISTS worm_game_db."character"
 
 );
 
+CREATE TABLE IF NOT EXISTS worm_game_db.inventory
+(
+    character_id integer NOT NULL,
+    PRIMARY KEY (character_id),
+      CONSTRAINT character_fk FOREIGN KEY (character_id)
+    REFERENCES worm_game_db."character" (id)
+);
+
+CREATE TABLE IF NOT EXISTS worm_game_db.account
+(
+    id integer NOT NULL,
+    character_id integer NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    CONSTRAINT account_pkey PRIMARY KEY (id),
+    CONSTRAINT character_fk FOREIGN KEY (character_id)
+        REFERENCES worm_game_db."character" (id)
+);
+
+
+
+-- JOIN TABLES 
 CREATE TABLE IF NOT EXISTS worm_game_db.character_effect
 (
     character_id integer NOT NULL,
@@ -80,6 +186,19 @@ CREATE TABLE IF NOT EXISTS worm_game_db.character_stage
     REFERENCES worm_game_db.stage (id) 
 );
 
+
+
+CREATE TABLE IF NOT EXISTS worm_game_db.archectype_stat
+(
+    archetype_id integer NOT NULL,
+    stat_id integer NOT NULL,
+    PRIMARY KEY (archetype_id, stat_id),
+    CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
+    REFERENCES worm_game_db.archetype (id) ,
+      CONSTRAINT stat_fk FOREIGN KEY (stat_id)
+    REFERENCES worm_game_db.stat (id)
+);
+
 CREATE TABLE IF NOT EXISTS worm_game_db.level_up_bonus
 (
     character_id integer NOT NULL,
@@ -88,26 +207,6 @@ CREATE TABLE IF NOT EXISTS worm_game_db.level_up_bonus
     CONSTRAINT character_talent_pkey PRIMARY KEY (character_id, talent_id),
     CONSTRAINT stat_fk FOREIGN KEY (stat_id)
     	REFERENCES worm_game_db.stat (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.dialogue
-(
-    id integer NOT NULL,
-    content text COLLATE pg_catalog."default" NOT NULL,
-    character_stage_id integer NOT NULL,
-    CONSTRAINT dialogue_pkey PRIMARY KEY (id),
-      CONSTRAINT character_stage_fk FOREIGN KEY (character_stage_id)
-    REFERENCES worm_game_db.character_stage (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.effect
-(
-    id integer NOT NULL,
-    name text COLLATE pg_catalog."default" NOT NULL,
-    description text COLLATE pg_catalog."default" NOT NULL,
-    duration integer NOT NULL,
-    strength integer NOT NULL,
-    CONSTRAINT effect_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS worm_game_db.inventory_item
@@ -123,34 +222,6 @@ CREATE TABLE IF NOT EXISTS worm_game_db.inventory_item
 
 );
 
-CREATE TABLE IF NOT EXISTS worm_game_db.item
-(
-    id integer NOT NULL,
-    sprite_id integer NOT NULL,
-    effect_id integer,
-    name text COLLATE pg_catalog."default" NOT NULL,
-    description text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT item_pkey PRIMARY KEY (id),
-          CONSTRAINT effect_fk FOREIGN KEY (effect_id)
-    REFERENCES worm_game_db.effect (id) ,
-      CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
-    REFERENCES worm_game_db.sprite (id) 
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.sprite
-(
-    id integer NOT NULL,
-    path text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT sprite_pkey PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.stage
-(
-    id integer NOT NULL,
-    name text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT stage_pkey PRIMARY KEY (id)
-);
-
 CREATE TABLE IF NOT EXISTS worm_game_db.stage_tile 
 (
     id integer NOT NULL,
@@ -162,84 +233,21 @@ CREATE TABLE IF NOT EXISTS worm_game_db.stage_tile
     CONSTRAINT stage_tile_pkey PRIMARY KEY (id),
 
     CONSTRAINT tile_fk FOREIGN KEY (tile_id)
-    REFERENCES worm_game_db.tile (id) ,
+    	REFERENCES worm_game_db.tile (id) ,
     CONSTRAINT stage_fk FOREIGN KEY (stage_id)
-    REFERENCES worm_game_db.stage (id) ,
+    	REFERENCES worm_game_db.stage (id) ,
     CONSTRAINT item_fk FOREIGN KEY (item_id)
-    REFERENCES worm_game_db.item (id) 
+    	REFERENCES worm_game_db.item (id) 
 ); 
-CREATE TABLE IF NOT EXISTS worm_game_db.talent
+
+-- DIALOGUE
+CREATE TABLE IF NOT EXISTS worm_game_db.dialogue
 (
     id integer NOT NULL,
-    archetype_id integer NOT NULL,
-    CONSTRAINT talent_pkey PRIMARY KEY (id),
-       CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
-    REFERENCES worm_game_db.archetype (id)
+    content text COLLATE pg_catalog."default" NOT NULL,
+    character_stage_id integer NOT NULL,
+    CONSTRAINT dialogue_pkey PRIMARY KEY (id),
+      CONSTRAINT character_stage_fk FOREIGN KEY (character_stage_id)
+    REFERENCES worm_game_db.character_stage (id)
 );
 
-CREATE TABLE IF NOT EXISTS worm_game_db.tile
-(
-    id integer NOT NULL,
-    effect_id integer,
-    name text COLLATE pg_catalog."default" NOT NULL,
-    sprite_id integer NOT NULL,
-    CONSTRAINT tile_pkey PRIMARY KEY (id),
-          CONSTRAINT effect_fk FOREIGN KEY (effect_id)
-    REFERENCES worm_game_db.effect (id) ,
-      CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
-    REFERENCES worm_game_db.sprite (id) 
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.weapon
-(
-    id integer NOT NULL,
-    sprite_id integer NOT NULL,
-    damage integer NOT NULL,
-    name text NOT NULL,
-    description text NOT NULL,
-    CONSTRAINT weapon_pkey PRIMARY KEY (id),
-       CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
-    REFERENCES worm_game_db.sprite (id) 
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.weapon_effect
-(
-    weapon_id integer NOT NULL,
-    effect_id integer NOT NULL,
-    sprite_id integer NOT NULL,
-    CONSTRAINT weapon_effect_pkey PRIMARY KEY (weapon_id, effect_id),
-       CONSTRAINT effect_fk FOREIGN KEY (effect_id)
-    REFERENCES worm_game_db.effect (id) ,
-      CONSTRAINT sprite_fk FOREIGN KEY (sprite_id)
-    REFERENCES worm_game_db.sprite (id) ,
-      CONSTRAINT weapon_fk FOREIGN KEY (weapon_id)
-    REFERENCES worm_game_db.weapon (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.stat
-(
-    id integer NOT NULL,
-    name text NOT NULL,
-    description text NOT NULL,
-    value integer NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.archectype_stat
-(
-    archetype_id integer NOT NULL,
-    stat_id integer NOT NULL,
-    PRIMARY KEY (archetype_id, stat_id),
-    CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
-    REFERENCES worm_game_db.archetype (id) ,
-      CONSTRAINT stat_fk FOREIGN KEY (stat_id)
-    REFERENCES worm_game_db.stat (id)
-);
-
-CREATE TABLE IF NOT EXISTS worm_game_db.inventory
-(
-    character_id integer NOT NULL,
-    PRIMARY KEY (character_id),
-      CONSTRAINT character_fk FOREIGN KEY (character_id)
-    REFERENCES worm_game_db."character" (id)
-);
