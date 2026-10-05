@@ -266,7 +266,7 @@ AS
 $BODY$
 	BEGIN
 		RETURN(
-		SELECT sum(stat."value") --, stat.id, stat.name, level_up_bonus.character_id  
+		SELECT sum(stat."value")
 		FROM stat 
 		INNER JOIN level_up_bonus ON stat.id = level_up_bonus.stat_id
 		WHERE stat.name = stat_name AND level_up_bonus.character_id = char_id
@@ -275,7 +275,4 @@ $BODY$
 $BODY$
 
 ;
-
-SELECT * FROM get_stat_for_character(1, 'hp');
-
 
