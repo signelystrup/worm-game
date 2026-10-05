@@ -250,11 +250,32 @@ CREATE TABLE IF NOT EXISTS  dialogue
     CONSTRAINT dialogue_pkey PRIMARY KEY (id),
       CONSTRAINT character_stage_fk FOREIGN KEY (character_stage_id)
     REFERENCES  character_stage (id)
+) ;
+END;
+
+
+SET SEARCH_PATH = worm_game_db;
+
+CREATE OR REPLACE FUNCTION get_stat_for_character(
+    IN char_id integer,
+    IN stat_name TEXT
 ) 
-END
+RETURNS integer
+LANGUAGE plpgsql
+AS
+$BODY$
+	BEGIN
+		RETURN(
+		SELECT stat."value" --, stat.id, stat.name, level_up_bonus.character_id  
+		FROM stat 
+		INNER JOIN level_up_bonus ON stat.id = level_up_bonus.stat_id
+		WHERE stat.name = stat_name AND level_up_bonus.character_id = char_id
+		);
+	END;
+$BODY$
 
-
-SELECT level_up_bonus.stat_id 
-FROM  level_up_bonus 
-INNER JOIN  "character".id ON  level_up_bonus.character_id 
 ;
+
+SELECT * FROM get_stat_for_character(1, 'hp');
+
+
