@@ -16,6 +16,6 @@ $BODY$
 		WHERE stat.name = stat_name AND level_up_bonus.character_id = char_id
 		);
 	END;
-$BODY$
+$BOD
 ;
 
