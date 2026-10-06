@@ -2,16 +2,18 @@ services:
   postgres:
     build: .
     image: postgres:18
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: demo
+      POSTGRES_DB: worm-game
     command:
       - postgres
       - -c
       - shared_preload_libraries=pg_cron
       - -c
-      - cron.database_name=demo
+      - cron.database_name=worm-game
 
   pgadmin:
     image: dpage/pgadmin4:latest
