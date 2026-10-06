@@ -1,4 +1,4 @@
-CREATE TABLE daily_statistics
+CREATE TABLE worm_game_db.daily_statistics
 (
     date date PRIMARY KEY,
     character_count integer NOT NULL,
@@ -17,8 +17,6 @@ SELECT cron.schedule(
         SELECT
             CURRENT_DATE,
             (SELECT COUNT(*) FROM worm_game_db."character"),
-            (SELECT COUNT(*)
-             FROM worm_game_db.character_stage
-             WHERE completed = true);
+            (SELECT COUNT(*) FROM worm_game_db.character_stage WHERE completed = true);
     $$
 );
