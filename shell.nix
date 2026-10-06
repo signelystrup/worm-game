@@ -5,6 +5,7 @@ pkgs.mkShell {
     nodejs_26
     yarn
     typescript
+    postgresql
   ];
 
   shellHook = ''
