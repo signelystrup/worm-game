@@ -20,7 +20,16 @@
   },
   "homepage": "https://github.com/signelystrup/worm-game#readme",
   "dependencies": {
+    "dotenv": "^18.0.5",
+    "drizzle-orm": "^1.0.0-rc.4",
     "express": "^5.2.1",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^1.0.0-rc.4",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
