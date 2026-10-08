@@ -3,8 +3,8 @@
 -- selects all stats with a given name (eg. "max_hp") for a character and returns the total sum of the values.
 CREATE OR REPLACE FUNCTION get_stat_for_character(
     IN char_id integer,
-    IN stat_name TEXT
-) 
+    IN stat_name text
+)
 RETURNS integer
 LANGUAGE plpgsql
 AS
@@ -17,6 +17,4 @@ $BODY$
 		WHERE stat.name = stat_name AND level_up_bonus.character_id = char_id
 		);
 	END;
-$BODY$
-;
-
+$BODY$;

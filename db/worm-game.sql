@@ -6,7 +6,7 @@ CREATE SCHEMA worm_game_db
 
 CREATE TABLE IF NOT EXISTS  effect
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     name text COLLATE pg_catalog."default" NOT NULL,
     description text COLLATE pg_catalog."default" NOT NULL,
     duration integer NOT NULL,
@@ -16,21 +16,21 @@ CREATE TABLE IF NOT EXISTS  effect
 
 CREATE TABLE IF NOT EXISTS  sprite
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     path text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT sprite_pkey PRIMARY KEY (id)
 ) 
 
 CREATE TABLE IF NOT EXISTS  stage
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     name text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT stage_pkey PRIMARY KEY (id)
 ) 
 
 CREATE TABLE IF NOT EXISTS  stat
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
     description text NOT NULL,
     value integer NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS  stat
 
 CREATE TABLE IF NOT EXISTS  item
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     sprite_id integer NOT NULL,
     effect_id integer,
     name text COLLATE pg_catalog."default" NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS  item
 
 CREATE TABLE IF NOT EXISTS  tile
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     effect_id integer,
     name text COLLATE pg_catalog."default" NOT NULL,
     sprite_id integer NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS  tile
 
 CREATE TABLE IF NOT EXISTS  weapon
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     sprite_id integer NOT NULL,
     damage integer NOT NULL,
     name text NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS  weapon
 -- ARCHETYPE 
 CREATE TABLE IF NOT EXISTS  archetype
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     weapon_id integer NOT NULL,
     hat_sprite_id integer,
     name text NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS  archetype
 
 CREATE TABLE IF NOT EXISTS  talent
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     archetype_id integer NOT NULL,
     CONSTRAINT talent_pkey PRIMARY KEY (id),
     CONSTRAINT archetype_fk FOREIGN KEY (archetype_id)
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS  weapon_effect
 -- CHARACTER
 CREATE TABLE IF NOT EXISTS  "character"
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     weapon_id integer NOT NULL,
     archetype_id integer NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS  inventory
 
 CREATE TABLE IF NOT EXISTS  account
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     character_id integer NOT NULL,
     username text NOT NULL,
     password text NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS  character_effect
 
 CREATE TABLE IF NOT EXISTS  character_stage
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     character_id integer NOT NULL,
     stage_id integer NOT NULL,
     completed boolean NOT NULL DEFAULT false,
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS  inventory_item
 
 CREATE TABLE IF NOT EXISTS  stage_tile 
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     stage_id integer NOT NULL,
     tile_id integer NOT NULL,
     item_id integer,
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS  stage_tile
 -- DIALOGUE
 CREATE TABLE IF NOT EXISTS  dialogue
 (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     content text COLLATE pg_catalog."default" NOT NULL,
     character_stage_id integer NOT NULL,
     CONSTRAINT dialogue_pkey PRIMARY KEY (id),
