@@ -1,4 +1,5 @@
-CREATE TABLE worm_game_db.daily_statistics
+CREATE EXTENSION pg_cron;
+CREATE TABLE daily_statistics
 (
     date date PRIMARY KEY,
     character_count integer NOT NULL,
@@ -12,11 +13,11 @@ SELECT cron.schedule(
     --'* * * * *', -- run event every minute
     '0 0 * * *', -- run event every midnight
     $$
-        INSERT INTO worm_game_db.daily_statistics
+        INSERT INTO daily_statistics
             (date, character_count, completed_stages)
         SELECT
             CURRENT_DATE,
-            (SELECT COUNT(*) FROM worm_game_db."character"),
-            (SELECT COUNT(*) FROM worm_game_db.character_stage WHERE completed = true);
+            (SELECT COUNT(*) FROM "character"),
+            (SELECT COUNT(*) FROM character_stage WHERE completed = true);
     $$
 );
