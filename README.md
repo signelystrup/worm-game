@@ -1,6 +1,11 @@
 # Worm Game
 A simple browser based roguelike game, in which you play as a snail in the forest.
 
+# Prerequisites
+* Node (npm & npx)
+* Docker and Docker Compose
+* psql (optional)
+
 # Setup for local development
 1. Install dependencies:
    ```bash
