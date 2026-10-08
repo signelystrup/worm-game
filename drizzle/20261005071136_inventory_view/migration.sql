@@ -3,7 +3,7 @@ CREATE OR REPLACE VIEW player_inventory AS
 SELECT
     inventory.character_id,
 
-    "character".name AS character_name,
+    character.name AS character_name,
 
     archetype.id AS archetype_id,
     archetype.name AS archetype_name,
@@ -29,29 +29,29 @@ SELECT
 
 FROM inventory
 
-JOIN "character"
-    ON "character".id = inventory.character_id
+INNER JOIN character
+    ON inventory.character_id = character.id
 
-JOIN account
-    ON account.character_id = "character".id
+INNER JOIN account
+    ON character.id = account.character_id
 
 LEFT JOIN archetype
-    ON archetype.id = "character".archetype_id
+    ON character.archetype_id = archetype.id
 
 LEFT JOIN weapon
-    ON weapon.id = "character".weapon_id
+    ON character.weapon_id = weapon.id
 
-JOIN inventory_item
-    ON inventory_item.inventory_id = inventory.character_id
+INNER JOIN inventory_item
+    ON inventory.character_id = inventory_item.inventory_id
 
-JOIN item
-    ON item.id = inventory_item.item_id
+INNER JOIN item
+    ON inventory_item.item_id = item.id
 
 LEFT JOIN sprite
-    ON sprite.id = item.sprite_id
+    ON item.sprite_id = sprite.id
 
 LEFT JOIN effect
-    ON effect.id = item.effect_id;
+    ON item.effect_id = effect.id;
 
 --veiw to get all of a players inventory information in one go.
 -- i imagine we use this when we display the inventory screen
