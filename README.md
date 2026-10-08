@@ -18,7 +18,7 @@ A simple browser based roguelike game, in which you play as a snail in the fores
 ## Database connection
 **Open database**
 ```bash
-$ docker compose up -d
+$ docker compose up -d --build
 ```
 
 **Connect to SQL:**
