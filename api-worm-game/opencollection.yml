@@ -17,9 +17,12 @@ config:
 request:
   auth:
     type: awsv4
-    accessKeyId: 6xKA8rNH14ubHqxPFgCb
-    secretAccessKey: BsoR3Hv2tDfIkYeMhrJLGUigyucjZwbXbROeQmYI
+    accessKeyId: cg9LLafLjwJ59tlypC6B
+    secretAccessKey: Zmpet8oDZq5IIr7y2scjVYz2Z82B5EXQQi0vkmsM
+    sessionToken: ""
     service: s3
+    region: ""
+    profileName: ""
 bundled: false
 extensions:
   bruno:
