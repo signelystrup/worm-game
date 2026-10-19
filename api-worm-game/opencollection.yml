@@ -2,6 +2,24 @@ opencollection: 1.0.0
 
 info:
   name: api-worm-game
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: awsv4
+    accessKeyId: 6xKA8rNH14ubHqxPFgCb
+    secretAccessKey: BsoR3Hv2tDfIkYeMhrJLGUigyucjZwbXbROeQmYI
+    service: s3
 bundled: false
 extensions:
   bruno:
