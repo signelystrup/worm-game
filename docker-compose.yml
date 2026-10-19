@@ -42,5 +42,6 @@ services:
     volumes:
       - ./minio/data:/data
     command: server /data --console-address ":9001"
-            
 
+rTZHX3LvzuQ971aDNljI        
+dIjVhHgTpH2zf7J0CWUC0MIjJrjJzywvamYtCq1M
