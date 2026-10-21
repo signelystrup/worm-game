@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS character_stage
 );
 
 
-CREATE TABLE IF NOT EXISTS archectype_stat
+CREATE TABLE IF NOT EXISTS archetype_stat
 (
     archetype_id integer NOT NULL,
     stat_id integer NOT NULL,

@@ -6,7 +6,7 @@ TRUNCATE TABLE
     stage_tile,
     inventory_item,
     level_up_bonus,
-    archectype_stat,
+    archetype_stat,
     character_stage,
     character_effect,
     account,
@@ -122,7 +122,7 @@ VALUES
     (2, 1, false, 12, 4);
 
 -- Archetype stats
-INSERT INTO archectype_stat (archetype_id, stat_id) VALUES
+INSERT INTO archetype_stat (archetype_id, stat_id) VALUES
     (1, 1),
     (1, 3),
     (1, 4),
