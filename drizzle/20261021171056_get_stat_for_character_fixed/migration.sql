@@ -18,8 +18,8 @@ $BODY$
                     FROM stat
                     INNER JOIN level_up_bonus 
                         ON stat.id = level_up_bonus.stat_id
-                    WHERE stat.name = 'Health' 
-                        AND level_up_bonus.character_id = 1
+                    WHERE stat.name = stat_name
+                        AND level_up_bonus.character_id = char_id
                 ) AS lvl_bonus,
                         
                 -- archetype defaults
@@ -29,8 +29,8 @@ $BODY$
                         ON stat.id = archectype_stat.stat_id
                         LEFT JOIN "character"
                             ON archectype_stat.archetype_id = character.archetype_id
-                        WHERE character.id = 1
-                            AND stat.name = 'Health'
+                        WHERE stat.name = stat_name
+                            AND character.id = char_id
                 ) AS arch_bonus
 		);
 	END;
