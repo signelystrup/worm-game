@@ -5,6 +5,7 @@ A simple browser based roguelike game, in which you play as a snail in the fores
 * Node (npm & npx)
 * Docker and Docker Compose
 * psql (optional)
+* Typescript compiler
 
 # Setup for local development
 1. Install dependencies:
@@ -15,7 +16,12 @@ A simple browser based roguelike game, in which you play as a snail in the fores
    ```env
    DATABASE_URL=postgres://postgres:secret@localhost:5432/worm-game
    ```
-3. Start the app:
+3. Compile the app:
+   ```bash
+   $ tsc
+   ```
+
+4. Start the app:
    ```bash
    $ npm start
    ```
