@@ -1,0 +1,5 @@
+name: local
+variables:
+  - name: SERVER
+    value: http://localhost:8080
+    description: Worm Game host
