@@ -8,7 +8,12 @@ http:
   url: "{{SERVER}}/characters/"
   body:
     type: json
-    data: '{"id": 1}'
+    data: |-
+      {
+        "accountId": 1,
+        "archetypeId": 1,
+        "characterName": "Bob"
+      }
   auth: inherit
 
 settings:

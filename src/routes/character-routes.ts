@@ -9,9 +9,9 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 router.post('/', (req: Request, res: Response)  => {
-    const body: {id: number} = req.body;
+    const body: {accountId: number, archetypeId: number, characterName: String} = req.body;
 
-    res.send(`status: ${req.statusCode}, body: ${body.id}`);
+    res.send(`status: ${req.statusCode}, body: ${body.characterName}`);
 
 
 });
