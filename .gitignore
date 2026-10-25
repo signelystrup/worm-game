@@ -145,3 +145,6 @@ dist
 #vs code 
 .vscode
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+/drizzle/relations.ts
+/drizzle/schema.ts

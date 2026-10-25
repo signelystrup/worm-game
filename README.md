@@ -54,6 +54,14 @@ $ npx drizzle-kit generate --custom --name=[create-name]
 $ npx drizzle-kit migrate
 ```
 
+npx drizzle-kit pull
+
+**generate relations and schema:**
+```bash
+$ npx drizzle-kit pull
+```
+
+
 **Node application**: localhost:8080/
 
 **PgAdmin**: localhost:5050/\
