@@ -3,14 +3,15 @@ import express from 'express'
 
 
 //keep routes and packages seperate blocks 
-import exampleRoutes from './routes/example-routes.js'
+import stageRoutes from './routes/stage-routes.js';
 
 //we store the express application in app so we can add to it. like routes and middlware. 
 const app = express()
 
 
-//routes routes get loaded in here 
-app.use(exampleRoutes)
+//routes routes get loaded in here
+app.use('/stage', stageRoutes);
+
 
 
 //the standard / route send as a javascript object 

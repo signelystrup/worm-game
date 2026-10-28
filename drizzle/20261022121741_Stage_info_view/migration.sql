@@ -22,7 +22,6 @@ LEFT JOIN character c ON c.id = cs.character_id;
 
 CREATE OR REPLACE VIEW stage_with_tiles AS
 SELECT
-    -- st.id AS stage_tile_id,
     st.stage_id,
     st.world_x,
     st.world_y,
