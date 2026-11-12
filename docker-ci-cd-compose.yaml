@@ -1,18 +1,25 @@
 services:
   postgres:
+    build: .
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: addresses
+      POSTGRES_DB: worm-game
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_cron
+      - -c
+      - cron.database_name=worm-game
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d addresses"]
       interval: 2s
       timeout: 3s
       retries: 30
-      
+
   minio:
     image:  pgsty/minio
     container_name: minio
