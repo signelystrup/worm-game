@@ -148,3 +148,5 @@ dist
 
 /drizzle/relations.ts
 /drizzle/schema.ts
+minio/data/.minio.sys/tmp/.trash/**
+minio/data/.minio.sys/tmp/.trash/
