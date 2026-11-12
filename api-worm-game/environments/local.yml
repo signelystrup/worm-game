@@ -1,0 +1,5 @@
+name: local
+variables:
+  - name: SILO_API
+    value: http://localhost:9000
+    description: Query SILO server
