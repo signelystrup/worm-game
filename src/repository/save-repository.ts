@@ -1,45 +1,9 @@
-import express, { type Response } from 'express';
-import type { saveGameDTO } from '../dto/saveDTO.js';
+import db from "../db/connection.js"
 
 
-export function Validator(saveGameDTO: saveGameDTO, res: Response) {
-    if (!Number.isFinite(saveGameDTO.characterId)) {
-        return res.status(400).send({response: 'characterId was not set' })
-    }
 
-    if (!Number.isFinite(saveGameDTO.inventoryid)) {
-        return res.status(400).send({response: 'inventoryid was not set' })
-    }
 
-    if (!Number.isFinite(saveGameDTO.weaponId)) {
-        return res.status(400).send({response: 'weaponId was not set' })
-    }
-    if (!Array.isArray(saveGameDTO.inventory)) {
-        return res.status(400).send({response: 'weaponId was not set' })
-    }
-    for (const [index, item] of saveGameDTO.inventory.entries()) {
-        if (
-            item === null ||
-            !Number.isFinite(item.itemId) ||
-            !Number.isFinite(item.amount)
-        ) {
-            return res.status(400).send({
-                response: `inventory item at index ${index} was not set`,
-            });
-        }
-    }
-
-    if (!Number.isFinite(saveGameDTO.levelup.statId || saveGameDTO.levelup.talentId)) {
-        return res.status(400).send({response: 'levelup was not set' })
-    }
-
-    if (!Number.isFinite(saveGameDTO.characterId)) {
-        return res.status(400).send({response: 'characterId was not set' })
-    }
-
-    if (!Number.isFinite(saveGameDTO.completedStageId)) {
-        return res.status(400).send({response: 'completedStageId was not set' })
-    }
-
-    return true 
+export async function saveCharacter() {
+        await db.transaction(async (tx) => {
+    tx.insert(character)
 }
