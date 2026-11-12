@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "drizzle-kit migrate && drizzle-kit pull && node scripts/fix-drizzle-imports.mjs && tsc && node ./dist/app.js"
+    "start": "drizzle-kit migrate && drizzle-kit pull && tsc -p tsconfig.drizzle.json && tsc && node ./dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^1.0.0-rc.4",
     "tsx": "^4.23.15",
