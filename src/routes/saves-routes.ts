@@ -1,27 +1,10 @@
 import express, { type Request, type Response } from 'express';
 import db from '../db/connection.js';
 import { character } from '../../drizzle/schema.js';
+import type { saveGameDTO } from '../dto/saveDTO.js';
 
 const router = express.Router()
 
-interface saveGameDTO {
-    characterId: number,
-    inventoryid: number,
-    weaponId: number,
-    inventory: CharacterItem[], 
-    levelup: levelUpBonus,
-    completedStageId: number
-}
-
-interface CharacterItem {
-    itemId: number,
-    amount: number
-}
-
-interface levelUpBonus {
-    talentId: number
-    statId: number
-}
 
 function Validator(saveGameDTO: saveGameDTO, res: Response) {
     if (!Number.isFinite(saveGameDTO.characterId)) {
