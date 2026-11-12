@@ -25,6 +25,11 @@ A simple browser based roguelike game, in which you play as a snail in the fores
    ```bash
    $ npm start
    ```
+   
+Do migrations, tsc and start in one command:
+   ```bash
+   $ npm run start
+   ```
 
 ## Database connection
 **Open database**
