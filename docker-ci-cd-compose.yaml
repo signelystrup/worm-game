@@ -15,7 +15,7 @@ services:
       - -c
       - cron.database_name=worm-game
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d addresses"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d worm-game"]
       interval: 2s
       timeout: 3s
       retries: 30
