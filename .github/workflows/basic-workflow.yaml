@@ -1,0 +1,49 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  DATABASE_URL: postgres://postgres:secret@localhost:5432/worm-game
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [26.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build --if-present
+
+      - name: Start testing database
+        run: docker compose -f docker-ci-cd-compose.yaml up -d --build --wait
+
+      - name: Run migrations
+        run: npx drizzle-kit migrate
+
+      - name: Run drizzle pull 
+        run: npx drizzle-kit pull 
+      
+      - name: Start the api
+        run: npm start &
+
+      #- name: Run Bruno API tests
+        #Eworking-directory: bruno/person_test_data
+        #run: |
+          #npm install --global @usebruno/cli
+          #bru run --env local
