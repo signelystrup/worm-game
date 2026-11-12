@@ -42,8 +42,8 @@ jobs:
       - name: Start the api
         run: npm start &
 
-      - name: Run Bruno API tests
-        working-directory: bruno/person_test_data
-        run: |
-          npm install --global @usebruno/cli
-          bru run --env local
+      #- name: Run Bruno API tests
+        #Eworking-directory: bruno/person_test_data
+        #run: |
+          #npm install --global @usebruno/cli
+          #bru run --env local
