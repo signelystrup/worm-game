@@ -10,10 +10,15 @@ SELECT
     c.weapon_id,
     c.archetype_id,
     c.hostile,
-    c.sprite_url
+    c.sprite_url,
+
+    a.name AS archetype_name,
+    a.description AS archetype_description,
+    a.sprite_url AS archetype_sprite_url
 FROM stage s
 LEFT JOIN character_stage cs ON cs.stage_id = s.id
-LEFT JOIN character c ON c.id = cs.character_id;
+LEFT JOIN character c ON c.id = cs.character_id
+LEFT JOIN archetype a ON a.id = c.archetype_id;
 
 
 -- player stats --
@@ -21,9 +26,8 @@ CREATE OR REPLACE VIEW character_archetype_stats AS
 SELECT
     c.id AS character_id,
     c.name AS character_name,
-
+    
     a.id AS archetype_id,
-    a.name AS archetype_name,
 
     s.id AS stat_id,
     st.name AS stat_name,
