@@ -12,6 +12,5 @@
     "declarationMap": true,
   },
   "include": ["./drizzle/schema.ts", 
-              "./drizzle/relations.ts", 
-              "./drizzle/global.d.ts"]
+              "./drizzle/relations.ts"]
 }
