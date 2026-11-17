@@ -1,1 +1,0 @@
-declare function inet_server_port(): number;
