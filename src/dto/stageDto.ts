@@ -25,7 +25,8 @@ export type CharacterForStageDTO = {
 
     archetype : ArchetypeDTO,
     stats : StatDTO[] // contains both stats from archetype and level
-    inventory : InventoryDTO
+    inventory : InventoryDTO,
+    weapon : WeaponDTO
 }
 
 export type StatDTO = {

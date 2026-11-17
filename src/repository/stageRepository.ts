@@ -6,7 +6,7 @@ import * as stageDto from '../dto/stageDto.js';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-export async function getFullStage(stageId: number): Promise<stageDto.FullStageDTO> {
+export async function getFullStage(stageId: number): Promise<stageDto.FullStageDTO | null> {
     // 1. Stage
     const [stageData] = await db
         .select()
@@ -14,7 +14,7 @@ export async function getFullStage(stageId: number): Promise<stageDto.FullStageD
         .where(eq(stage.id, stageId));
 
     if (!stageData) {
-        throw new Error(`Stage ${stageId} not found`);
+        return null; // Stage not found
     }
 
     // 2. Tiles
@@ -145,6 +145,13 @@ export async function getFullStage(stageId: number): Promise<stageDto.FullStageD
 
             inventory: {
                 items: characterInventory,
+            },
+            weapon: {
+                id : row.weaponId!,
+                damage : row.weaponDamage!,
+                name : row.weaponName!,
+                description : row.weaponDescription!,
+                spriteUrl : row.weaponSpriteUrl!,
             },
         };
     });
