@@ -1,4 +1,4 @@
-import { pgSchema, pgEnum, pgTable, integer, date, bigint, bigserial, text, boolean, timestamp, uniqueIndex, foreignKey, primaryKey, unique, pgPolicy, pgView } from "drizzle-orm/pg-core"
+import { pgSchema, pgEnum, pgTable, bigint, integer, bigserial, date, text, boolean, timestamp, uniqueIndex, foreignKey, primaryKey, unique, pgPolicy, pgView } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const cron = pgSchema("cron");
@@ -201,6 +201,26 @@ export const weaponEffect = pgTable("weapon_effect", {
 }, (table) => [
 	primaryKey({ columns: [table.weaponId, table.effectId], name: "weapon_effect_pkey"}),
 ]);
+export const characterArchetypeStats = pgView("character_archetype_stats", {	characterId: integer("character_id"),
+	characterName: text("character_name"),
+	archetypeId: integer("archetype_id"),
+	statId: integer("stat_id"),
+	statName: text("stat_name"),
+	statDescription: text("stat_description"),
+	statValue: integer("stat_value"),
+}).as(sql`SELECT c.id AS character_id, c.name AS character_name, a.id AS archetype_id, s.id AS stat_id, st.name AS stat_name, st.description AS stat_description, s.value AS stat_value FROM "character" c JOIN archetype a ON a.id = c.archetype_id JOIN archetype_stat ast ON ast.archetype_id = a.id JOIN stat s ON s.id = ast.stat_id JOIN stat_type st ON st.id = s.stat_type_id`);
+
+export const characterLevelStats = pgView("character_level_stats", {	characterId: integer("character_id"),
+	characterName: text("character_name"),
+	statId: integer("stat_id"),
+	statName: text("stat_name"),
+	statDescription: text("stat_description"),
+	statValue: integer("stat_value"),
+	id: integer(),
+	talentName: text("talent_name"),
+	talentDescription: text("talent_description"),
+}).as(sql`SELECT c.id AS character_id, c.name AS character_name, s.id AS stat_id, st.name AS stat_name, st.description AS stat_description, s.value AS stat_value, t.id, t.name AS talent_name, t.description AS talent_description FROM "character" c JOIN level_up_bonus lub ON lub.character_id = c.id JOIN stat s ON s.id = lub.stat_id JOIN stat_type st ON st.id = s.stat_type_id JOIN talent t ON t.id = lub.talent_id`);
+
 export const playerInventory = pgView("player_inventory", {	characterId: integer("character_id"),
 	characterName: text("character_name"),
 	archetypeId: integer("archetype_id"),
@@ -219,3 +239,43 @@ export const playerInventory = pgView("player_inventory", {	characterId: integer
 	effectDuration: integer("effect_duration"),
 	effectStrength: integer("effect_strength"),
 }).as(sql`SELECT inventory.character_id, "character".name AS character_name, archetype.id AS archetype_id, archetype.name AS archetype_name, weapon.id AS weapon_id, weapon.name AS weapon_name, weapon.damage AS weapon_damage, inventory_item.item_id, inventory_item.amount, item.name AS item_name, item.description AS item_description, item.sprite_url AS item_sprite_path, effect.id AS effect_id, effect.name AS effect_name, effect.description AS effect_description, effect.duration AS effect_duration, effect.strength AS effect_strength FROM inventory JOIN "character" ON inventory.character_id = "character".id JOIN account ON "character".id = account.character_id LEFT JOIN archetype ON "character".archetype_id = archetype.id LEFT JOIN weapon ON "character".weapon_id = weapon.id JOIN inventory_item ON inventory.character_id = inventory_item.inventory_id JOIN item ON inventory_item.item_id = item.id LEFT JOIN effect ON item.effect_id = effect.id`);
+
+export const stageWithCharacters = pgView("stage_with_characters", {	name: text(),
+	stageId: integer("stage_id"),
+	characterId: integer("character_id"),
+	startX: integer("start_x"),
+	startY: integer("start_y"),
+	weaponId: integer("weapon_id"),
+	weaponDamage: integer("weapon_damage"),
+	weaponName: text("weapon_name"),
+	weaponDescription: text("weapon_description"),
+	weaponSpriteUrl: text("weapon_sprite_url"),
+	archetypeId: integer("archetype_id"),
+	hostile: boolean(),
+	spriteUrl: text("sprite_url"),
+	archetypeName: text("archetype_name"),
+	archetypeDescription: text("archetype_description"),
+	archetypeSpriteUrl: text("archetype_sprite_url"),
+}).as(sql`SELECT s.name, cs.stage_id, cs.character_id, cs.start_x, cs.start_y, c.weapon_id, w.damage AS weapon_damage, w.name AS weapon_name, w.description AS weapon_description, w.sprite_url AS weapon_sprite_url, c.archetype_id, c.hostile, c.sprite_url, a.name AS archetype_name, a.description AS archetype_description, a.sprite_url AS archetype_sprite_url FROM stage s LEFT JOIN character_stage cs ON cs.stage_id = s.id LEFT JOIN "character" c ON c.id = cs.character_id LEFT JOIN archetype a ON a.id = c.archetype_id LEFT JOIN weapon w ON w.id = c.weapon_id`);
+
+export const stageWithTiles = pgView("stage_with_tiles", {	stageId: integer("stage_id"),
+	worldX: integer("world_x"),
+	worldY: integer("world_y"),
+	tileId: integer("tile_id"),
+	tileName: text("tile_name"),
+	tileSpriteUrl: text("tile_sprite_url"),
+	tileEffectId: integer("tile_effect_id"),
+	tileEffectName: text("tile_effect_name"),
+	tileEffectDescription: text("tile_effect_description"),
+	tileEffectDuration: integer("tile_effect_duration"),
+	tileEffectStrength: integer("tile_effect_strength"),
+	itemId: integer("item_id"),
+	itemName: text("item_name"),
+	itemDescription: text("item_description"),
+	itemSpriteUrl: text("item_sprite_url"),
+	itemEffectId: integer("item_effect_id"),
+	itemEffectName: text("item_effect_name"),
+	itemEffectDescription: text("item_effect_description"),
+	itemEffectDuration: integer("item_effect_duration"),
+	itemEffectStrength: integer("item_effect_strength"),
+}).as(sql`SELECT st.stage_id, st.world_x, st.world_y, t.id AS tile_id, t.name AS tile_name, t.sprite_url AS tile_sprite_url, te.id AS tile_effect_id, te.name AS tile_effect_name, te.description AS tile_effect_description, te.duration AS tile_effect_duration, te.strength AS tile_effect_strength, i.id AS item_id, i.name AS item_name, i.description AS item_description, i.sprite_url AS item_sprite_url, ie.id AS item_effect_id, ie.name AS item_effect_name, ie.description AS item_effect_description, ie.duration AS item_effect_duration, ie.strength AS item_effect_strength FROM stage_tile st JOIN tile t ON t.id = st.tile_id LEFT JOIN effect te ON te.id = t.effect_id LEFT JOIN item i ON i.id = st.item_id LEFT JOIN effect ie ON ie.id = i.effect_id`);
