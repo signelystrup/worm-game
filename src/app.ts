@@ -10,7 +10,7 @@ const app = express()
 
 
 //routes routes get loaded in here
-app.use('/stage', stageRoutes);
+app.use('/api/stage', stageRoutes);
 
 
 
