@@ -18,11 +18,11 @@ export async function selectCharacterFromAccount(accountId: number) {
 }
 
 export async function deleteCharacterById (characterId: number) {
-    await db.delete(character).where(eq(character.id, characterId)); 
+    return await db.delete(character).where(eq(character.id, characterId)); 
 }
 
-export async function insertCharacterWithAccount (accountId: number, newCharacter: NewCharacter) {
-    return db.insert(character).values(newCharacter);
+export async function insertCharacterWithAccount (newCharacter: NewCharacter) {
+    return db.insert(character).values(newCharacter).returning();
 }
 
 export async function updateAccountCharacterId(accountId: number, characterId: number) {

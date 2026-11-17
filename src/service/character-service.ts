@@ -1,18 +1,28 @@
 import type { NewCharacter } from "../db/model.js";
 import {selectCharacterWithId, selectCharacterFromAccount, deleteCharacterById, insertCharacterWithAccount, updateAccountCharacterId} from '../db/character-repository.js'
 
-function createNewCharacter(accountId: number, name: string, archetypeId: number) {
-    // find character belonging to account:
-
-    //if account has character: delete character
+function createNewPlayerCharacter(accountId: number, name: string, archetypeId: number) {
+    //delete existing character: 
+    selectCharacterFromAccount(accountId).then( (oldCharacter) => {// find character belonging to account
+        deleteCharacterById( oldCharacter.id )
+    });
 
     //create new character with name, archetype and default weapon.
-    const newCharacter: NewCharacter = { name: name, archetypeId: archetypeId, weaponId: 1, hostile: false, spriteUrl: "path" };
-    
-    // insert character
-    // update account.character_id
+    const weaponId = 1; // TODO! find archetype default weapon
+    const spriteUrl = "/default/player/character/path"; // TODO!
 
+    const newCharacter: NewCharacter = { 
+        name: name, 
+        archetypeId: archetypeId, 
+        weaponId: weaponId, 
+        hostile: false, 
+        spriteUrl: spriteUrl 
+    };
 
+    // insert character + update account id.
+    insertCharacterWithAccount(newCharacter).then( newCharacter => {
+        updateAccountCharacterId(accountId, newCharacter[0].id); // update account.character_id
+    });
 }
 
 
