@@ -45,14 +45,7 @@ export const account = pgTable("account", {
 	password: text().notNull(),
 	email: text().notNull(),
 }, (table) => [
-	unique("unique_account_cols").on(table.characterId, table.email),]);
-
-export const archectypeStat = pgTable("archectype_stat", {
-	archetypeId: integer("archetype_id").notNull().references(() => archetype.id),
-	statId: integer("stat_id").notNull().references(() => stat.id),
-}, (table) => [
-	primaryKey({ columns: [table.archetypeId, table.statId], name: "archectype_stat_pkey"}),
-]);
+	unique("unique_acc_character").on(table.characterId),	unique("unique_acc_email").on(table.email),]);
 
 export const archetype = pgTable("archetype", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -61,6 +54,13 @@ export const archetype = pgTable("archetype", {
 	description: text().notNull(),
 	spriteUrl: text("sprite_url").default("/weapon_01.png").notNull(),
 });
+
+export const archetypeStat = pgTable("archetype_stat", {
+	archetypeId: integer("archetype_id").notNull().references(() => archetype.id),
+	statId: integer("stat_id").notNull().references(() => stat.id),
+}, (table) => [
+	primaryKey({ columns: [table.archetypeId, table.statId], name: "archectype_stat_pkey"}),
+]);
 
 export const auditAccount = pgTable("audit_account", {
 	id: bigint({ mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),

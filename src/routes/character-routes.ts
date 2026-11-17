@@ -1,6 +1,8 @@
-import express, { type Request, type Response } from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 
-const router = express.Router({ caseSensitive: true, strict: true });
+
+const router: Express = express();
+
 
 router.use(express.json());
 

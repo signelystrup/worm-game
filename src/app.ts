@@ -5,12 +5,11 @@ import express from 'express'
 //keep routes and packages seperate blocks 
 import characterRoutes from './routes/character-routes.js';
 
-//we store the express application in app so we can add to it. like routes and middlware. 
-const app = express()
+const PORT = 8080 //port of the application 
+const app = express() //we store the express application in app so we can add to it. like routes and middlware. 
 
-
-//routes routes get loaded in here 
-app.use('/characters', characterRoutes);
+// load routes:
+app.use('/character', characterRoutes);
 
 //the standard / route send as a javascript object 
 // which is automatically sent as json
@@ -27,10 +26,6 @@ app.all('/{*splat}', (req, res) => {
 })
 
 
-
-
-//port of the application 
-const PORT = 8080
 
 //starts the app on the port 
 app.listen(PORT, () => {

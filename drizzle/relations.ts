@@ -22,14 +22,14 @@ export const relations = defineRelations(schema, (r) => ({
 		levelUpBonuses: r.many.levelUpBonus(),
 	},
 	archetype: {
-		stats: r.many.stat({
-			from: r.archetype.id.through(r.archectypeStat.archetypeId),
-			to: r.stat.id.through(r.archectypeStat.statId)
-		}),
 		weapon: r.one.weapon({
 			from: r.archetype.weaponId,
 			to: r.weapon.id,
 			alias: "archetype_weaponId_weapon_id"
+		}),
+		stats: r.many.stat({
+			from: r.archetype.id.through(r.archetypeStat.archetypeId),
+			to: r.stat.id.through(r.archetypeStat.statId)
 		}),
 		weapons: r.many.weapon({
 			from: r.archetype.id.through(r.character.archetypeId),
@@ -37,14 +37,6 @@ export const relations = defineRelations(schema, (r) => ({
 			alias: "archetype_id_weapon_id_via_character"
 		}),
 		talents: r.many.talent(),
-	},
-	stat: {
-		archetypes: r.many.archetype(),
-		levelUpBonuses: r.many.levelUpBonus(),
-		statType: r.one.statType({
-			from: r.stat.statTypeId,
-			to: r.statType.id
-		}),
 	},
 	weapon: {
 		archetypesWeaponId: r.many.archetype({
@@ -54,6 +46,14 @@ export const relations = defineRelations(schema, (r) => ({
 			alias: "archetype_id_weapon_id_via_character"
 		}),
 		effects: r.many.effect(),
+	},
+	stat: {
+		archetypes: r.many.archetype(),
+		levelUpBonuses: r.many.levelUpBonus(),
+		statType: r.one.statType({
+			from: r.stat.statTypeId,
+			to: r.statType.id
+		}),
 	},
 	effect: {
 		characters: r.many.character(),

@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{SERVER}}/characters/"
+  url: "{{SERVER}}/character"
   body:
     type: json
     data: |-
