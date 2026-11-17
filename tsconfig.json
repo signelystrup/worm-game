@@ -44,5 +44,5 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
   },
-  "exclude": ["drizzle.config.ts", "dist/**"],
+  "exclude": ["drizzle.config.ts", "dist/**", "drizzle/**"],
 }
