@@ -5,11 +5,13 @@ function createNewCharacter(accountId: number, name: string, archetypeId: number
 
     //if account has character: delete character
 
-    //create new character with name and archetype
-
+    //create new character with name, archetype and default weapon.
     const newCharacter: NewCharacter = { name: name, archetypeId: archetypeId, weaponId: 1, hostile: false, spriteUrl: "path" };
     
-    //await insertUser(newCharacter);
+    // insert character
+    // update account.character_id
+
+
 }
 
 
