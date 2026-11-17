@@ -4,6 +4,7 @@ import express from 'express'
 
 //keep routes and packages seperate blocks 
 import stageRoutes from './routes/stage-routes.js';
+import itemRoutes from './routes/item-routes.js'
 
 //we store the express application in app so we can add to it. like routes and middlware. 
 const app = express()
@@ -11,6 +12,7 @@ const app = express()
 
 //routes routes get loaded in here
 app.use('/api/stage', stageRoutes);
+app.use('/api/items', itemRoutes);
 
 
 
