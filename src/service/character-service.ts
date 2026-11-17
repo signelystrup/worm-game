@@ -1,5 +1,6 @@
 import type { NewCharacter } from "../db/model.js";
 import {selectCharacterWithId, selectCharacterFromAccount, deleteCharacterById, insertCharacterWithAccount, updateAccountCharacterId} from '../db/character-repository.js'
+
 function createNewCharacter(accountId: number, name: string, archetypeId: number) {
     // find character belonging to account:
 

@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from 'express';
-import { getFullStage } from '../repository/stage-repository.js';
+import { getFullStage } from '../db/stage-repository.js';
 
 const router = express.Router();
 
