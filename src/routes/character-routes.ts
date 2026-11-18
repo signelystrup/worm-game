@@ -1,9 +1,8 @@
 import express, { type Express, type Request, type Response } from 'express';
 
+import {createNewPlayerCharacter} from '../service/character-service.js';
 
 const router: Express = express();
-
-
 router.use(express.json());
 
 router.get('/', (req: Request, res: Response) => {
@@ -11,18 +10,14 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 router.post('/', (req: Request, res: Response)  => {
-    const body: {accountId: number, archetypeId: number, characterName: String} = req.body;
+    const body: {accountId: number, archetypeId: number, characterName: string} = req.body;
     
+    createNewPlayerCharacter(body.accountId, body.characterName, body.archetypeId);
+
     res.send(`status: ${req.statusCode}, body: ${body.characterName}`);
 
 
 });
 
-/*
-router.param('id', (req: Request, res: Response, next: NextFunction, id: string) => {
-  console.log('CALLED ONLY ONCE');
-  next();
-});
-*/
 
 export default router;
