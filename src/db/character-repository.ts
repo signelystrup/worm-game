@@ -4,29 +4,42 @@ import type { NewCharacter } from './model.js';
 import db from './connection.js'
 import {character, account} from '../../dist/drizzle/schema.js'; //'../../drizzle/schema.js'
 
-
+// returns character with given id
 export async function selectCharacterWithId(characterId: number) {
   const result = await db.select().from(character).where(eq(character.id, characterId) );
   return result[0];
 }
 
+// return character belonging to a given account
 export async function selectCharacterFromAccount(accountId: number) {
-  const accountResult = await db.select( {characterId: account.characterId} ).from(account).where(eq(account.id, accountId)); //findn account + characterId
-  const characterResult = await db.select().from(character).where(eq(character.id, accountResult[0].characterId) ); // select character, with same id as account.character_id
+  const accountResult = await db.select( {characterId: account.characterId} )
+    .from(account)
+    .where(eq(account.id, accountId)); //findn account + characterId
+  
+  const characterResult = await db.select()
+    .from(character)
+    .where(eq(character.id, accountResult[0].characterId) ); // select character, with same id as account.character_id
   
   return characterResult[0];
 }
 
+// deletes character with given id.
 export async function deleteCharacterById (characterId: number) {
-    return await db.delete(character).where(eq(character.id, characterId)); 
+    return await db.delete(character)
+        .where(eq(character.id, characterId)); 
 }
 
-export async function insertCharacterWithAccount (newCharacter: NewCharacter) {
-    return db.insert(character).values(newCharacter).returning();
+// Insert new character
+export async function insertCharacter (newCharacter: NewCharacter) {
+    return db.insert(character)
+        .values(newCharacter).returning();
 }
 
+// Update character belonging to existing account
 export async function updateAccountCharacterId(accountId: number, characterId: number) {
-
+    return db.update(account)
+        .set( {characterId: characterId})
+        .where(eq(account.id, accountId));
 }
 
 

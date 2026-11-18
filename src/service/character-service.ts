@@ -1,7 +1,7 @@
 import type { NewCharacter } from "../db/model.js";
-import {selectCharacterWithId, selectCharacterFromAccount, deleteCharacterById, insertCharacterWithAccount, updateAccountCharacterId} from '../db/character-repository.js'
+import {selectCharacterFromAccount, deleteCharacterById, insertCharacter, updateAccountCharacterId} from '../db/character-repository.js'
 
-function createNewPlayerCharacter(accountId: number, name: string, archetypeId: number) {
+export function createNewPlayerCharacter(accountId: number, name: string, archetypeId: number) {
     //delete existing character: 
     selectCharacterFromAccount(accountId).then( (oldCharacter) => {// find character belonging to account
         deleteCharacterById( oldCharacter.id )
@@ -20,7 +20,7 @@ function createNewPlayerCharacter(accountId: number, name: string, archetypeId: 
     };
 
     // insert character + update account id.
-    insertCharacterWithAccount(newCharacter).then( newCharacter => {
+    insertCharacter(newCharacter).then( newCharacter => {
         updateAccountCharacterId(accountId, newCharacter[0].id); // update account.character_id
     });
 }
