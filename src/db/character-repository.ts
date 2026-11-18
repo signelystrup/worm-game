@@ -2,7 +2,7 @@ import { eq, lt, gte, ne } from 'drizzle-orm';
 
 import type { NewCharacter } from './model.js';
 import db from './connection.js'
-import {character, account} from '../../drizzle/schema.js'
+import {character, account} from '../../dist/drizzle/schema.js'; //'../../drizzle/schema.js'
 
 
 export async function selectCharacterWithId(characterId: number) {

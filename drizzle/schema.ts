@@ -12,7 +12,7 @@ export const jobInCron = cron.table.withRLS("job", {
 	schedule: text().notNull(),
 	command: text().notNull(),
 	nodename: text().default("localhost").notNull(),
-	nodeport: integer().default(inet_server_port()).notNull(),
+	nodeport: integer().default(sql`inet_server_port()`).notNull(),
 	database: text().default(sql`current_database()`).notNull(),
 	username: text().default(sql`CURRENT_USER`).notNull(),
 	active: boolean().default(true).notNull(),
