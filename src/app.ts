@@ -1,18 +1,22 @@
 //import express application its like springboot or axum
 import express from 'express'
 
+import { createInitialAdmin } from './helpers/create-starting-admin.js'
+createInitialAdmin();
 
 //keep routes and packages seperate blocks 
 import stageRoutes from './routes/stage-routes.js';
 import itemRoutes from './routes/item-routes.js'
+import authRoutes from './routes/auth-routes.js'
 
 //we store the express application in app so we can add to it. like routes and middlware. 
 const app = express()
-
+app.use(express.json());
 
 //routes routes get loaded in here
 app.use('/api/stage', stageRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api', authRoutes);
 
 
 

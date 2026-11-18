@@ -15,6 +15,8 @@ A simple browser based roguelike game, in which you play as a snail in the fores
 2. Create a `.env` file and add your database URL:
    ```env
    DATABASE_URL=postgres://postgres:secret@localhost:5432/worm-game
+   INITIAL_ADMIN_EMAIL=admin
+   INITIAL_ADMIN_PASSWORD=admin
    ```
 3. Compile the app:
    ```bash

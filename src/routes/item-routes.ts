@@ -2,12 +2,17 @@ import express from 'express'
 import * as helpers from './route-helper-functions.js'
 import type { itemOptions } from '../dto/item-dto.js';
 import { getItems } from '../repository/item-repository.js';
+import { authenticateUser, authorizeRoles } from './middleware/auth.js';
 
 //just like app we define it with express in order to have it run the api 
 const router = express()
 
 //router routes
+// create
+
+// read
 router.get('/', (req, res) => {
+  // get options from query
   const options : itemOptions = {
     // Pagination
     itemPage: Math.max(helpers.getQueryInt(req.query.page, 0), 1),
@@ -24,13 +29,13 @@ router.get('/', (req, res) => {
       description: helpers.getQueryString(req.query.filterDescription, ""),
     },
   }
-  console.log(options)
 
+  // get items from db
   getItems(options).then((items) => {
-    
     res.send({ data: items });
   });
 
+  // helper function for sort direction
   // returns true if acending, and false for decending
   function getSortDirection(value: unknown) : boolean {
     if (typeof value !== "string")
@@ -41,6 +46,18 @@ router.get('/', (req, res) => {
   };
 });
 
+// update
+
+// delete
+router.delete('/:itemId', authenticateUser, authorizeRoles('admin'), (req, res) => {
+  const itemId : number = parseInt(req.params.itemId as string);
+  if (isNaN(itemId)) {
+    res.status(400).send({ error: 'Invalid itemId parameter' });
+    return;
+  }
+  console.log("item should be deleted")
+  res.status(200).send({ error: 'Item deleted' });
+});
 
 
 
