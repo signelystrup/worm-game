@@ -32,7 +32,7 @@ export async function deleteAccount(accountId: number) {
     db.transaction(async (tx) => {
         const characterId :number = (await tx.select()
             .from(account)
-            .where(eq(account.id, accountId)))[0].characterId;
+            .where(eq(account.id, accountId)))[0].characterId!;
         
         // delete account
         await tx.delete(account)

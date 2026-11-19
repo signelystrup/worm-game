@@ -18,7 +18,7 @@ export async function selectCharacterFromAccount(accountId: number) {
   
   const characterResult = await db.select()
     .from(character)
-    .where(eq(character.id, accountResult[0].characterId) ); // select character, with same id as account.character_id
+    .where(eq(character.id, accountResult[0].characterId!) ); // select character, with same id as account.character_id
   
   return characterResult[0];
 }

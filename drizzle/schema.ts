@@ -1,4 +1,4 @@
-import { pgSchema, pgEnum, pgTable, bigint, integer, bigserial, date, text, boolean, timestamp, uniqueIndex, foreignKey, primaryKey, unique, pgPolicy, pgView } from "drizzle-orm/pg-core"
+import { pgSchema, pgEnum, pgTable, integer, date, bigint, bigserial, text, boolean, timestamp, uniqueIndex, foreignKey, primaryKey, unique, pgPolicy, pgView } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const cron = pgSchema("cron");
@@ -40,7 +40,7 @@ export const jobRunDetailsInCron = cron.table.withRLS("job_run_details", {
 
 export const account = pgTable("account", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	characterId: integer("character_id").notNull().references(() => character.id),
+	characterId: integer("character_id").references(() => character.id),
 	username: text().notNull(),
 	password: text().notNull(),
 	email: text().notNull(),

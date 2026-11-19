@@ -9,7 +9,8 @@ export async function createNewAccount(email: string, password: string, username
     const account = {
         email: email,
         password: password,
-        username: username
+        username: username,
+        characterId: null
     };
 
     //insert account in db
