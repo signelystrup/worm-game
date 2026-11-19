@@ -119,6 +119,45 @@ export async function getItem(itemId : number): Promise<ItemDTO[]> {
         .leftJoin(effect, eq(item.effectId, effect.id))
 }
 
+export async function updateItem(id : number, newItemData: ItemDTO): Promise<void> {
+    try {
+        await db.transaction(async (tx) => {
+            let effectId: number | null = null;
+
+            // Create effect first, if one exists, and not in the database
+            if (newItemData.effect) {
+                if (newItemData.effect.id)
+                    effectId = newItemData.effect.id
+                else {
+                    const [createdEffect] = await tx
+                        .insert(effect)
+                        .values({
+                            name: newItemData.effect.name,
+                            description: newItemData.effect.description,
+                            duration: newItemData.effect.duration,
+                            strength: newItemData.effect.strength,
+                        })
+                        .returning({ id: effect.id });
+
+                    effectId = createdEffect.id;
+                }
+            }
+
+            // Create item
+
+            await tx.update(item)
+                .set({
+                    name: newItemData.name,
+                    description: newItemData.description,
+                    spriteUrl: newItemData.spriteUrl,
+                    effectId: effectId,
+                })
+                .where(eq(item.id, id));
+        });
+    } catch { // something wrong, likely gave an effectId not in the database.
+    }
+}
+
 // transaction that deletes an item of a given id, along with any inventoryItem and stageTile that refers to it
 export async function deleteItem(itemId: number) {
     return await db.transaction(async (tx) => {

@@ -3,7 +3,7 @@ import * as helpers from './route-helper-functions.js'
 import type { itemOptions, ItemDTO } from '../dto/item-dto.js';
 import { verifyItemDTO } from '../dto/item-dto.js';
 import { authenticateUser, authorizeRoles } from './middleware/auth.js';
-import { createItem, getItems, getItem, deleteItem } from '../repository/item-repository.js';
+import { createItem, getItems, getItem, updateItem, deleteItem } from '../repository/item-repository.js';
 
 //just like app we define it with express in order to have it run the api 
 const router = express()
@@ -14,14 +14,14 @@ router.post('/', authenticateUser, authorizeRoles('admin'), (req, res) => {
 	const newItem = req.body as ItemDTO;
 	if (!verifyItemDTO(newItem))
 	{
-		res.status(400).send({ error: 'item formatted incorrectly' });
+		res.status(400).send({ error: 'Item formatted incorrectly' });
 		return;
 	}
 	createItem(newItem).then((itemIds)=>{
 		if (itemIds && itemIds.length !== 0)
 			res.status(201).location("api/items/" + itemIds[0].id.toString()).send();
 		else
-			res.status(400).send({ Error: 'data formatted incorrectly' });
+			res.status(400).send({ Error: 'Data formatted incorrectly' });
 	})
 });
 
@@ -78,7 +78,23 @@ router.get('/:itemId', (req, res) => {
 });
 
 // update
-//router.put(/:itemId)
+router.put('/:itemId', authenticateUser, authorizeRoles('admin'), (req, res) => {
+	const itemId : number = parseInt(req.params.itemId as string);
+	if (isNaN(itemId)) {
+		res.status(400).send({ error: 'Invalid itemId parameter' });
+		return;
+	}
+	const updatedItem = req.body as ItemDTO;
+	if (!verifyItemDTO(updatedItem))
+	{
+		res.status(400).send({ error: 'Item formatted incorrectly' });
+		return;
+	}
+	updateItem(itemId, updatedItem).then(()=> {
+		res.status(200).send();
+	})
+});
+
 // delete
 router.delete('/:itemId', authenticateUser, authorizeRoles('admin'), (req, res) => {
 	const itemId : number = parseInt(req.params.itemId as string);
