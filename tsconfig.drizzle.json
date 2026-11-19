@@ -11,6 +11,6 @@
     "declaration": true,
     "declarationMap": true,
   },
-  "include": ["./drizzle/schema.ts", 
-              "./drizzle/relations.ts"]
+  "include": ["./src/db/schema.ts", 
+              "./src/db/relations.ts"]
 }
