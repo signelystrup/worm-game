@@ -3,6 +3,7 @@ import db from '../db/connection.js';
 
 import type { saveGameDTO } from '../dto/saveDTO.js';
 import { Validator } from '../service/save-service.js';
+import { saveCharacter } from '../repository/save-repository.js';
 
 
 
@@ -16,7 +17,7 @@ router.post('/saves', async (req, res) => {
     if (Validator(saveGameDTO, res) !== true) {
         return; 
     }
-    
+    await saveCharacter(saveGameDTO)
 })
 
 
