@@ -1,7 +1,7 @@
 info:
   name: Update account with id
   type: http
-  seq: 4
+  seq: 3
 
 http:
   method: PUT
@@ -10,6 +10,15 @@ http:
     - name: id
       value: "1"
       type: path
+  body:
+    type: json
+    data: |-
+      {
+        id: 1,
+        password: "password",
+        username: "BrunoErSej",
+        email: "bruno@example.com"
+      }
   auth: inherit
 
 settings:

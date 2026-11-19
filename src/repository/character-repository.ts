@@ -32,7 +32,7 @@ export async function deleteCharacterByIdAndUpdateAccount (oldCharacterId: numbe
         	.where(eq(account.characterId, oldCharacterId));
 
       	//delete character
-		deleteCharacterById(oldCharacterId);
+		    deleteCharacterById(oldCharacterId);
     });
 }
 

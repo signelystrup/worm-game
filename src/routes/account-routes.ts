@@ -6,19 +6,25 @@ const router: Express = express();
 router.use(express.json());
 
 router.get('/:id', async (req: Request<{ id: number}>, res: Response)  => {
-    const accountDTO: SimpleAccountDTO = await findAccountById(req.params.id);    
-    res.send(accountDTO);
+    findAccountById(req.params.id).then(accountDTO => {
+        res.status(200).send(accountDTO);
+    }).catch(error => {
+        res.status(400).send(error);
+    });
 });
 
 router.post('/', async (req: Request, res: Response)  => {
     res.send({ data: 'POST new account ' })
 });
 
-router.put('/:id', async (req: Request<{ id: number}>, res: Response)  => {
-    const accountDTO: UpdateAccountDTO = req.body;
-    updateAccount(accountDTO);
+router.put('/:id', async (req: Request, res: Response)  => {
+    const accountDTO: {id: number, username: string, email: string, password: string} = req.body;
 
-    res.send({ data: 'PUT account with id: ' + req.params.id })
+    updateAccount(accountDTO).then( () => 
+        res.status(200).send( {msg: "account updated"})
+    ).catch( ()=> 
+        res.status(400).send({error: "failed to update account with id: " + req.params.id })
+    );
 });
 
 router.delete('/:id', async (req: Request<{ id: number}>, res: Response)  => {

@@ -33,19 +33,19 @@ export async function createNewAccount(email: string, password: string, username
 export async function updateAccount(accountDTO: UpdateAccountDTO) {
     const currentAccount = await selectAccountWithId(accountDTO.id);
 
-    if (accountDTO.newEmail) {
+    if (accountDTO.email) {
         //TODO! hashing
     }
 
     // Take values from DTO, if set. Otherwise use existing values from db. 
     const accountChangeSet : Account = {
-        email: accountDTO.newEmail? accountDTO.newEmail : currentAccount.email,
-        password: accountDTO.newPassword? accountDTO.newPassword : currentAccount.password,
-        username: accountDTO.newUsername? accountDTO.newUsername : currentAccount.username,
+        email: accountDTO.email? accountDTO.email : currentAccount.email,
+        password: accountDTO.password? accountDTO.password : currentAccount.password,
+        username: accountDTO.username? accountDTO.username : currentAccount.username,
         characterId: currentAccount.characterId,
     };
 
-    repoUpdateAccount(accountDTO.id, accountChangeSet);
+    return repoUpdateAccount(accountDTO.id, accountChangeSet);
 }
 
 
