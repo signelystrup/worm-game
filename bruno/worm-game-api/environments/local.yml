@@ -1,0 +1,8 @@
+name: local
+variables:
+  - name: admin-token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNjNjMwMDVjLTU4MTAtNGI1YS1iNjhlLTNhM2ZkYzE3ZDUyYiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc5NTA5MzUzNywiZXhwIjoxNzk1MDk3MTM3fQ.MF-z-EOA9x9O74K2cgvgXjFemSXYIaRyMYKlI0-Ftwk
+  - name: newly-created-itemi-d
+    value: ""
+  - name: newly-created-itemi-id
+    value: api/items/15
