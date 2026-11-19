@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq, inArray } from "drizzle-orm";
-import { stageWithCharacters, stageWithTiles, characterArchetypeStats, stage, characterLevelStats, playerInventory } from '../../dist/drizzle/schema.js';
+import { stageWithCharacters, stageWithTiles, characterArchetypeStats, stage, characterLevelStats, playerInventory } from './../db/schema.js'; ;
 import * as stageDto from '../dto/stage-dto.js';
 
 const db = drizzle(process.env.DATABASE_URL!);
