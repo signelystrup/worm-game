@@ -1,5 +1,5 @@
 import type { NewCharacter } from "../db/model.js";
-import {selectCharacterFromAccount, deleteCharacterByIdAndUpdateAccount, insertCharacter, updateAccountCharacterId} from '../db/character-repository.js'
+import {selectCharacterFromAccount, deleteCharacterByIdAndUpdateAccount, insertCharacter, updateAccountCharacterId} from '../repository/character-repository.js'
 
 // creates new player character, deletes old player characters, and updates player character on account.
 export async function createNewPlayerCharacter(accountId: number, name: string, archetypeId: number) {

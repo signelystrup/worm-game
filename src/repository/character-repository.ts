@@ -1,7 +1,7 @@
 import { eq, lt, gte, ne } from 'drizzle-orm';
 
-import type { NewCharacter } from './model.js';
-import db from './connection.js'
+import type { NewCharacter } from '../db/model.js';
+import db from '../db/connection.js'
 import {character, account, inventory} from '../../dist/drizzle/schema.js'; //'../../drizzle/schema.js'
 
 // returns character with given id
