@@ -12,7 +12,7 @@ A simple browser based roguelike game, in which you play as a snail in the fores
    ```bash
    $ npm install
    ```
-2. Create a `.env` file and add your database URL:
+2. Create a `.env` file and add your database URL and starting admin email and password:
    ```env
    DATABASE_URL=postgres://postgres:secret@localhost:5432/worm-game
    INITIAL_ADMIN_EMAIL=admin
