@@ -8,9 +8,9 @@ import { deleteCharacterById } from './character-repository.js';
 
 
 export async function selectAccountWithId(accountId: number) {
-    return await db.select()
+    return (await db.select()
         .from(account)
-        .where(eq(account.id, accountId));
+        .where(eq(account.id, accountId)))[0];
 }
 
 
