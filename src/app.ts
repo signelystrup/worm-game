@@ -9,7 +9,7 @@ const PORT = 8080 //port of the application
 const app = express() //we store the express application in app so we can add to it. like routes and middlware. 
 
 // load routes:
-app.use('/character', characterRoutes);
+app.use('/api/character', characterRoutes);
 app.use('/api/stage', stageRoutes);
 
 //the standard / route send as a javascript object 
