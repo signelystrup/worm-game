@@ -1,3 +1,5 @@
+import type { ItemDTO } from "./item-dto.js"
+
 export type FullStageDTO = {
     id: number,
     stageName : string,
@@ -52,14 +54,6 @@ export type ArchetypeDTO = {
 
 export type InventoryDTO = {
   items : ItemDTO[]
-}
-
-export type ItemDTO = {
-    id : number,
-    name : string,
-    description : string,
-    spritePath : string,
-    effect : EffectDTO | null,
 }
 
 export type EffectDTO = {
