@@ -14,7 +14,7 @@ export async function selectAccountWithId(accountId: number) {
 }
 
 
-export async function createNewAccount(newAccount: Account) {
+export async function insertNewAccount(newAccount: Account) {
     return db.insert(account)
         .values(newAccount)
         .returning();
