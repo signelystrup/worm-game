@@ -26,18 +26,13 @@ export async function selectCharacterFromAccount(accountId: number) {
 // deletes character with given id.
 export async function deleteCharacterByIdAndUpdateAccount (oldCharacterId: number, newCharacterId: number) {
     db.transaction(async (tx) => {
+      	// update character on account
+      	await tx.update(account)
+        	.set( {characterId: newCharacterId})
+        	.where(eq(account.characterId, oldCharacterId));
 
-
-      // update character on account
-      await tx.update(account)
-        .set( {characterId: newCharacterId})
-        .where(eq(account.characterId, oldCharacterId));
-
-      //delete character
-      await tx.delete(character)
-        .where(eq(character.id, oldCharacterId)); 
-      await tx.delete(inventory) //inventory
-        .where(eq(inventory.characterId, oldCharacterId)); 
+      	//delete character
+		deleteCharacterById(oldCharacterId);
     });
 }
 
@@ -55,3 +50,14 @@ export async function updateAccountCharacterId(accountId: number, characterId: n
 }
 
 
+export async function deleteCharacterById (characterId: number) {
+	db.transaction(async (tx) => {
+      	//delete character
+      	await tx.delete(character)
+        	.where(eq(character.id, characterId)); 
+      	await tx.delete(inventory) //inventory
+        	.where(eq(inventory.characterId, characterId)); 
+
+		// join tables (TODO)
+    });
+}
