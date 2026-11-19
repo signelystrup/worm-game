@@ -53,5 +53,5 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: secret
       MONGO_INITDB_DATABASE: worm-game
-    volumes:
-      - mongo_data:/data/db
+    # volumes:
+    #  - mongo_data:/data/db
