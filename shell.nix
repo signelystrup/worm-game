@@ -2,7 +2,7 @@
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    nodejs_26
+    nodejs_latest
     yarn
     typescript
     postgresql

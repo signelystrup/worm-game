@@ -146,10 +146,7 @@ dist
 .vscode
 # End of https://www.toptal.com/developers/gitignore/api/node
 
+/drizzle/relations.ts
+/drizzle/schema.ts
 minio/data/.minio.sys/tmp/.trash/**
 minio/data/.minio.sys/tmp/.trash/
-minio/data/.minio.sys/buckets/*
-minio/data/.minio.sys/tmp/*
-
-drizzle/relations.ts
-drizzle/schema.ts
