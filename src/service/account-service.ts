@@ -5,9 +5,13 @@ import { insertNewAccount, selectAccountWithId, updateAccount as repoUpdateAccou
 
 
 export async function findAccountById(accountId: number) : Promise<SimpleAccountDTO> {
-
-
-
+    return selectAccountWithId(accountId).then(account => {
+        // map db account as SimpleAccountDTO
+        return {
+            username: account.username,
+            email: account.email,
+        }
+    });
 }
 
 export async function createNewAccount(email: string, password: string, username: string) {
@@ -34,7 +38,7 @@ export async function updateAccount(accountDTO: UpdateAccountDTO) {
     }
 
     // Take values from DTO, if set. Otherwise use existing values from db. 
-    const accountChangeSet : Account= {
+    const accountChangeSet : Account = {
         email: accountDTO.newEmail? accountDTO.newEmail : currentAccount.email,
         password: accountDTO.newPassword? accountDTO.newPassword : currentAccount.password,
         username: accountDTO.newUsername? accountDTO.newUsername : currentAccount.username,
