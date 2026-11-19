@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 //import { eq, inArray } from "drizzle-orm";
-import { item, effect } from '../../dist/drizzle/schema.js';
+import { item, effect, inventoryItem, stageTile } from '../../dist/drizzle/schema.js';
 import type { itemOptions, itemDTO } from '../dto/item-dto.js';
 import { clamp } from '../routes/route-helper-functions.js'
 
@@ -69,4 +69,19 @@ export async function getItems(options: itemOptions): Promise<itemDTO[]> {
     .offset(offset);
 
     return items;
+}
+
+// transaction that deletes an item of a given id, along with any inventoryItem and stageTile that refers to it
+export async function deleteItem(itemId: number) {
+    return await db.transaction(async (tx) => {
+        await tx.delete(inventoryItem)
+            .where(eq(inventoryItem.itemId, itemId));
+
+        await tx.delete(stageTile)
+            .where(eq(stageTile.itemId, itemId));
+
+        return await tx.delete(item)
+            .where(eq(item.id, itemId))
+            .returning();
+    });
 }

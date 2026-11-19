@@ -8,7 +8,6 @@ import { promisify } from 'util';
 export function authenticateUser(req: Request, res: Response, next: NextFunction): void {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
-    console.log(token)
     if (!token) {
         res.status(401).json({ message: 'Authentication required' });
         return;
@@ -16,9 +15,7 @@ export function authenticateUser(req: Request, res: Response, next: NextFunction
 
     try {
         const secret = process.env.JWT_SECRET as string;
-        console.log(secret)
         const decoded = jwt.verify(token, secret) as UserPayload;
-        console.log(decoded)
 
         req.user = decoded;
         next();

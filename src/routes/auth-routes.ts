@@ -37,7 +37,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
         return;
     }
 
-    // Verify the password using crypto.scrypt
+    // Verify the password using it's salt and hashing it
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
         res.status(401).json({ message: 'Invalid email or password' });

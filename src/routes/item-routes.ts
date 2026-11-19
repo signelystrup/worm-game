@@ -1,7 +1,7 @@
 import express from 'express'
 import * as helpers from './route-helper-functions.js'
 import type { itemOptions } from '../dto/item-dto.js';
-import { getItems } from '../repository/item-repository.js';
+import { getItems, deleteItem } from '../repository/item-repository.js';
 import { authenticateUser, authorizeRoles } from './middleware/auth.js';
 
 //just like app we define it with express in order to have it run the api 
@@ -55,8 +55,12 @@ router.delete('/:itemId', authenticateUser, authorizeRoles('admin'), (req, res) 
     res.status(400).send({ error: 'Invalid itemId parameter' });
     return;
   }
-  console.log("item should be deleted")
-  res.status(200).send({ error: 'Item deleted' });
+  deleteItem(itemId).then((items)=> {
+    if (items.length == 0)
+      res.status(204).send({ msg: 'There were no items, with the given id' });
+    else
+      res.status(200).send({ msg: 'Item deleted' });
+  });
 });
 
 
