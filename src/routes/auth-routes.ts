@@ -7,7 +7,7 @@ import { User } from '../types/user-privileges.js';
 
 const router = express.Router();
 
-// POST /api/auth/register
+// POST /api/register
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
