@@ -42,3 +42,16 @@ services:
     volumes:
       - ./minio/data:/data
     command: server /data --console-address ":9001"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: worm-game
+    volumes:
+      - mongo_data:/data/db
