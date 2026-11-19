@@ -152,4 +152,4 @@ minio/data/.minio.sys/buckets/*
 minio/data/.minio.sys/tmp/*
 
 src/db/relations.ts
-src/db/drizzle/schema.ts
+src/db/schema.ts
