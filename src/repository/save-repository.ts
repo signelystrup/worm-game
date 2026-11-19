@@ -1,5 +1,5 @@
 import db from "../db/connection.js"
-import {character, characterStage, inventory, inventoryItem, levelUpBonus} from "../../drizzle/schema.js"
+import {character, characterStage, inventory, inventoryItem, levelUpBonus} from "../db/schema.js"
 import type { saveGameDTO } from "../dto/saveDTO.js";
 import { and, eq } from "drizzle-orm";
 
