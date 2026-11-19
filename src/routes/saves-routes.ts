@@ -17,7 +17,24 @@ router.post('/saves', async (req, res) => {
     if (Validator(saveGameDTO, res) !== true) {
         return; 
     }
-    await saveCharacter(saveGameDTO)
+
+    try {
+        await saveCharacter(saveGameDTO);
+
+        return res.status(200).json({ 
+            success: true, 
+            message: "Game saved" 
+        });
+
+    } catch (error) {
+        console.error("Error saving game:", error);
+
+
+        return res.status(500).json({ 
+            success: false, 
+            message: "server error" 
+        });
+    }
 })
 
 
