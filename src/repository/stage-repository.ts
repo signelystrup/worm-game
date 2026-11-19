@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq, inArray } from "drizzle-orm";
 import { stageWithCharacters, stageWithTiles, characterArchetypeStats, stage, characterLevelStats, playerInventory } from '../../dist/drizzle/schema.js';
 import * as stageDto from '../dto/stagedto.js';
+import type { ItemDTO } from '../dto/item-dto.js';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -44,7 +45,7 @@ export async function getFullStage(stageId: number): Promise<stageDto.FullStageD
             id: row.itemId!,
             name: row.itemName!,
             description: row.itemDescription!,
-            spritePath: row.itemSpriteUrl!,
+            spriteUrl: row.itemSpriteUrl!,
             effect: row.itemEffectId === null ? null : {
                 id: row.itemEffectId,
                 name: row.itemEffectName!,
@@ -52,7 +53,7 @@ export async function getFullStage(stageId: number): Promise<stageDto.FullStageD
                 duration: row.itemEffectDuration!,
                 strength: row.itemEffectStrength!,
             } as stageDto.EffectDTO | null,
-        } as stageDto.ItemDTO | null,
+        } as ItemDTO | null,
     }));
 
     // 3. Characters
@@ -118,7 +119,7 @@ export async function getFullStage(stageId: number): Promise<stageDto.FullStageD
                 id: item.itemId!,
                 name: item.itemName!,
                 description: item.itemDescription!,
-                spritePath: item.itemSpritePath!,
+                spriteUrl: item.itemSpritePath!,
                 effect: item.effectId === null ? null : {
                     id: item.effectId,
                     name: item.effectName!,

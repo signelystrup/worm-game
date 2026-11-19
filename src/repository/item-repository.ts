@@ -1,21 +1,50 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-//import { eq, inArray } from "drizzle-orm";
 import { item, effect, inventoryItem, stageTile } from '../../dist/drizzle/schema.js';
-import type { itemOptions, itemDTO } from '../dto/item-dto.js';
+import type { itemOptions, ItemDTO } from '../dto/item-dto.js';
 import { clamp } from '../routes/route-helper-functions.js'
+import { eq, ilike, and, asc, desc } from "drizzle-orm";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-// export async function getItems(options : itemOptions) : Promise<itemDTO[]> {
-//     const items = db.select()
-//                     .from(item)
 
-//     return []
-// }
+export async function createItem(newItem: ItemDTO): Promise<{id: number}[] | null> {
+    try {
+        return await db.transaction(async (tx) => {
+            let effectId: number | null = null;
 
-import { eq, ilike, and, asc, desc } from "drizzle-orm";
+            // Create effect first, if one exists, and not in the database
+            if (newItem.effect) {
+                if (newItem.effect.id)
+                    effectId = newItem.effect.id
+                else {
+                    const [createdEffect] = await tx
+                        .insert(effect)
+                        .values({
+                            name: newItem.effect.name,
+                            description: newItem.effect.description,
+                            duration: newItem.effect.duration,
+                            strength: newItem.effect.strength,
+                        })
+                        .returning({ id: effect.id });
 
-export async function getItems(options: itemOptions): Promise<itemDTO[]> {
+                    effectId = createdEffect.id;
+                }
+            }
+
+            // Create item
+            return await tx.insert(item).values({
+                name: newItem.name,
+                description: newItem.description,
+                spriteUrl: newItem.spriteUrl,
+                effectId: effectId,
+            }).returning({ id: item.id});
+        });
+    } catch { // something wrong, likely gave an effectId not in the database.
+        return null
+    }
+}
+
+export async function getItems(options: itemOptions): Promise<ItemDTO[]> {
 
     // Filtering
     const conditions = [];
@@ -61,12 +90,12 @@ export async function getItems(options: itemOptions): Promise<itemDTO[]> {
             strength: effect.strength,
         }
     })
-    .from(item)
-    .where(and(...conditions))
-    .leftJoin(effect, eq(item.effectId, effect.id))
-    .orderBy(sortDirection)
-    .limit(pageSize)
-    .offset(offset);
+        .from(item)
+        .where(and(...conditions))
+        .leftJoin(effect, eq(item.effectId, effect.id))
+        .orderBy(sortDirection)
+        .limit(pageSize)
+        .offset(offset);
 
     return items;
 }

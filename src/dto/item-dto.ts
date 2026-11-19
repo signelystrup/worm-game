@@ -1,38 +1,46 @@
 import type { EffectDTO } from "./stagedto.js"
 
 export type itemOptions = {
-  // Pagination
-  itemPage : number,
-  itemPageSize : number,
+    // Pagination
+    itemPage: number,
+    itemPageSize: number,
 
-  // Sorting
-  itemSort : {
-    sortBy : string,
-    ascending : boolean,
-  },
+    // Sorting
+    itemSort: {
+        sortBy: string,
+        ascending: boolean,
+    },
 
-  // Filtering
-  itemFilter : {
-    name : string,
-    description : string,
-  },
+    // Filtering
+    itemFilter: {
+        name: string,
+        description: string,
+    },
 }
 
-export type itemDTO = {
-	id: number,
-	effect: EffectDTO | null,
-	name: string,
-	description: string,
-	spriteUrl: string,
-}
-/* // temp
-
-export type EffectDTO = {
-    id : number,
-    name : string,
-    description : string,
-    duration : number,
-    strength : number
+export type ItemDTO = {
+    id: number,
+    effect: EffectDTO | null,
+    name: string,
+    description: string,
+    spriteUrl: string,
 }
 
-*/
+export function verifyItemDTO(item: ItemDTO): boolean {
+    if (typeof item.name !== 'string' || item.name.length === 0)
+        return false;
+    if (typeof item.description !== 'string' || item.description.length === 0)
+        return false;
+    if (typeof item.spriteUrl !== 'string' || item.spriteUrl.length === 0)
+        return false;
+    // verify effect, if not null. And either it's id is a number so it refers to something in the system, or it has it's fields plottet
+    if (item.effect && typeof item.effect.id !== 'number') {
+        if (typeof item.effect.description !== 'string' || item.effect.description.length === 0)
+            return false;
+        if (typeof item.effect.duration !== 'number' || item.effect.duration <= 0)
+            return false;
+        if (typeof item.effect.strength !== 'number' || item.effect.strength <= 0)
+            return false;
+    }
+    return true;
+}
