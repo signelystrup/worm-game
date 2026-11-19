@@ -1,0 +1,7 @@
+info:
+  name: save
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

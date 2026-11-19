@@ -11,7 +11,7 @@ const router = express.Router()
 
 
 //router routes
-router.post('/saves', async (req, res) => {
+router.post('/api/saves', async (req, res) => {
     const saveGameDTO: saveGameDTO = req.body
 
     if (Validator(saveGameDTO, res) !== true) {
