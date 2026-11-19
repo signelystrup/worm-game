@@ -1,5 +1,23 @@
 import type { EffectDTO } from "./stage-dto.js"
 
+export type ItemOptions = {
+    // Pagination
+    itemPage: number,
+    itemPageSize: number,
+
+    // Sorting
+    itemSort: {
+        sortBy: string,
+        ascending: boolean,
+    },
+
+    // Filtering
+    itemFilter: {
+        name: string,
+        description: string,
+    },
+}
+
 export type ItemDTO = {
     id: number,
     effect: EffectDTO | null,
