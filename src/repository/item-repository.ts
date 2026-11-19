@@ -100,6 +100,25 @@ export async function getItems(options: itemOptions): Promise<ItemDTO[]> {
     return items;
 }
 
+export async function getItem(itemId : number): Promise<ItemDTO[]> {
+    return await db.select({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        spriteUrl: item.spriteUrl,
+        effect: {
+            id: effect.id,
+            name: effect.name,
+            description: effect.description,
+            duration: effect.duration,
+            strength: effect.strength,
+        }
+    })
+        .from(item)
+        .where(eq(item.id, itemId))
+        .leftJoin(effect, eq(item.effectId, effect.id))
+}
+
 // transaction that deletes an item of a given id, along with any inventoryItem and stageTile that refers to it
 export async function deleteItem(itemId: number) {
     return await db.transaction(async (tx) => {

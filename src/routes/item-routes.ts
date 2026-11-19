@@ -3,7 +3,7 @@ import * as helpers from './route-helper-functions.js'
 import type { itemOptions, ItemDTO } from '../dto/item-dto.js';
 import { verifyItemDTO } from '../dto/item-dto.js';
 import { authenticateUser, authorizeRoles } from './middleware/auth.js';
-import { createItem, getItems, deleteItem } from '../repository/item-repository.js';
+import { createItem, getItems, getItem, deleteItem } from '../repository/item-repository.js';
 
 //just like app we define it with express in order to have it run the api 
 const router = express()
@@ -34,15 +34,15 @@ router.get('/', (req, res) => {
 		itemPageSize: helpers.clamp(helpers.getQueryInt(req.query.pageSize, 10), 1, 100),
 		// Sorting
 		itemSort: {
-		sortBy: helpers.getQueryString(req.query.sortBy, ""),
-		ascending: getSortDirection(req.query.sortDirection)
-	},
+			sortBy: helpers.getQueryString(req.query.sortBy, ""),
+			ascending: getSortDirection(req.query.sortDirection)
+		},
 
-	// Filtering
-	itemFilter: {
-		name: helpers.getQueryString(req.query.filterName, ""),
-		description: helpers.getQueryString(req.query.filterDescription, ""),
-	},
+		// Filtering
+		itemFilter: {
+			name: helpers.getQueryString(req.query.filterName, ""),
+			description: helpers.getQueryString(req.query.filterDescription, ""),
+		},
 	}
 
 	// get items from db
@@ -61,6 +61,22 @@ router.get('/', (req, res) => {
 	};
 });
 
+// read one item
+router.get('/:itemId', (req, res) => {
+	const itemId : number = parseInt(req.params.itemId as string);
+	if (isNaN(itemId)) {
+		res.status(400).send({ error: 'Invalid itemId parameter' });
+		return;
+	}
+	getItem(itemId).then((items)=>
+	{
+		if (items.length !== 0)
+			res.status(200).send({ item: items[0] })
+		else
+			res.status(404).send({ error: 'No item with id: ' + itemId + ' exists'})
+	})
+});
+
 // update
 //router.put(/:itemId)
 // delete
@@ -71,10 +87,10 @@ router.delete('/:itemId', authenticateUser, authorizeRoles('admin'), (req, res) 
 		return;
 	}
 	deleteItem(itemId).then((items)=> {
-		if (items.length == 0)
-			res.status(204).send({ data: 'There were no items, with the given id' });
-		else
+		if (items.length !== 0)
 			res.status(200).send({ data: 'Item deleted' });
+		else
+			res.status(404).send({ error: 'There were no items, with the given id' });
 	});
 });
 
