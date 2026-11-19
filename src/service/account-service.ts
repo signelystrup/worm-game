@@ -27,7 +27,7 @@ export async function createNewAccount(email: string, password: string, username
     };
 
     //insert account in db
-    insertNewAccount(account);
+    return insertNewAccount(account);
 }
 
 export async function updateAccount(accountDTO: UpdateAccountDTO) {
