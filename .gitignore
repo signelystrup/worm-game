@@ -151,5 +151,5 @@ minio/data/.minio.sys/tmp/.trash/
 minio/data/.minio.sys/buckets/*
 minio/data/.minio.sys/tmp/*
 
-drizzle/relations.ts
-drizzle/schema.ts
+src/db/relations.ts
+src/db/schema.ts

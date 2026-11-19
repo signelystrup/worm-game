@@ -1,4 +1,4 @@
-import {character, account} from '../../dist/drizzle/schema.js';
+import {character, account} from './schema.js';
 
 export type NewCharacter = typeof character.$inferInsert;
 
