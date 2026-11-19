@@ -1,6 +1,8 @@
 //import express application its like springboot or axum
 import express from 'express'
 
+import { createInitialAdmin } from './helpers/create-starting-admin.js'
+createInitialAdmin();
 
 //keep routes and packages seperate blocks 
 import characterRoutes from './routes/character-routes.js';

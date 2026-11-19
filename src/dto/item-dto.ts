@@ -1,4 +1,4 @@
-import type { EffectDTO } from "./stagedto.js"
+import type { EffectDTO } from "./stage-dto.js"
 
 export type itemOptions = {
     // Pagination
