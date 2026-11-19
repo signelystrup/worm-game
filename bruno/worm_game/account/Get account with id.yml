@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: "{{SERVER}}/api/account/{accountId}"
+  url: "{{SERVER}}/api/account/:id"
+  params:
+    - name: id
+      value: "1"
+      type: path
   auth: inherit
 
 settings:
