@@ -17,8 +17,8 @@ router.post('/', async (req: Request, res: Response)  => {
     res.send({ data: 'POST new account ' })
 });
 
-router.put('/:id', async (req: Request, res: Response)  => {
-    const accountDTO: {id: number, username: string, email: string, password: string} = req.body;
+router.put('/', async (req: Request, res: Response)  => {
+    const accountDTO: UpdateAccountDTO = req.body;
 
     updateAccount(accountDTO).then( () => 
         res.status(200).send( {msg: "account updated"})
