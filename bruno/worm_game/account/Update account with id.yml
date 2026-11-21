@@ -5,19 +5,15 @@ info:
 
 http:
   method: PUT
-  url: "{{SERVER}}/api/account/:id"
-  params:
-    - name: id
-      value: "1"
-      type: path
+  url: "{{SERVER}}/api/account"
   body:
     type: json
     data: |-
       {
-        id: 1,
-        password: "password",
-        username: "BrunoErSej",
-        email: "bruno@example.com"
+        "id": 1,
+        "password": "password",
+        "username": "BrunoErSej",
+        "email": "bruno@example.com"
       }
   auth: inherit
 

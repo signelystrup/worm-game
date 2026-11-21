@@ -8,7 +8,7 @@ http:
   url: "{{SERVER}}/api/account/:id"
   params:
     - name: id
-      value: "3"
+      value: "5"
       type: path
   auth: inherit
 
