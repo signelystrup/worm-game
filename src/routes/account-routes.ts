@@ -1,6 +1,6 @@
 import express, { type Express, type Request, type Response } from 'express';
-import { findAccountById, createNewAccount, updateAccount } from '../service/account-service.js';
-import type { NewAccountDTO, SimpleAccountDTO, UpdateAccountDTO } from '../dto/account-dto.js';
+import { findAccountById, createNewAccount, updateAccount, deleteAccountWithId } from '../service/account-service.js';
+import type { SimpleAccountDTO, UpdateAccountDTO } from '../dto/account-dto.js';
 
 const router: Express = express();
 router.use(express.json());
@@ -34,8 +34,12 @@ router.put('/', async (req: Request, res: Response)  => {
 });
 
 router.delete('/:id', async (req: Request<{ id: number}>, res: Response)  => {
-    res.send({ data: 'DELETE account with id: ' + req.params.id  })
 
+    deleteAccountWithId(req.params.id).then( () => {
+        res.status(200).send( {msg: "deleted account with id: " + req.params.id});
+    }).catch( error => {
+        res.status(400).send( {error: "failed to delete account with id: " + req.params.id + ".\nerror: " + error})
+    });
 });
 
 export default router

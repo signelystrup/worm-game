@@ -1,11 +1,10 @@
-import { account } from "../../dist/drizzle/schema.js"
 import type { Account } from "../db/model.js";
 import type { SimpleAccountDTO, UpdateAccountDTO } from "../dto/account-dto.js";
-import { insertNewAccount, selectAccountWithId, updateAccount as repoUpdateAccount} from "../repository/account-repository.js"
+import { insertNewAccount, selectAccountWithId, updateAccount as repoUpdateAccount, deleteAccount} from "../repository/account-repository.js"
 
 
 export async function findAccountById(accountId: number) : Promise<SimpleAccountDTO> {
-    return selectAccountWithId(accountId).then(account => {
+    return await selectAccountWithId(accountId).then(account => {
         // map db account as SimpleAccountDTO
         return {
             username: account.username,
@@ -27,7 +26,7 @@ export async function createNewAccount(email: string, password: string, username
     };
 
     //insert account in db
-    return insertNewAccount(account);
+    return await insertNewAccount(account);
 }
 
 export async function updateAccount(accountDTO: UpdateAccountDTO) {
@@ -45,7 +44,10 @@ export async function updateAccount(accountDTO: UpdateAccountDTO) {
         characterId: currentAccount.characterId,
     };
 
-    return repoUpdateAccount(accountDTO.id, accountChangeSet);
+    return await repoUpdateAccount(accountDTO.id, accountChangeSet);
 }
 
+export async function deleteAccountWithId(id: number) {
+    await deleteAccount(id);
+}
 

@@ -29,17 +29,20 @@ export async function updateAccount(accountId: number, updatedAccount: Account) 
 
 export async function deleteAccount(accountId: number) {
 
-    db.transaction(async (tx) => {
-        const characterId :number = (await tx.select()
-            .from(account)
-            .where(eq(account.id, accountId)))[0].characterId!;
+    // finde character associated with account
+    const characterId :number | null = (await db.select()
+        .from(account)
+        .where(eq(account.id, accountId)))[0].characterId!;
         
+    db.transaction(async (tx) => {
         // delete account
         await tx.delete(account)
             .where(eq(account.id, accountId));
 
         // delete associated character
-        await deleteCharacterById(characterId);
+        if (characterId) {
+            await deleteCharacterById(characterId);
+        }
     });
 
 }

@@ -13,12 +13,6 @@ export interface UpdateAccountDTO {
     email?: string,
 }
 
-export interface NewAccountDTO {
-    password: string,
-    username: string,
-    email: string
-}
-
 
 
 
