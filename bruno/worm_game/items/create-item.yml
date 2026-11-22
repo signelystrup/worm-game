@@ -1,0 +1,36 @@
+info:
+  name: create-item
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: "{{SERVER}}/api/items"
+  body:
+    type: json
+    data: |-
+      {
+          "name": "test",
+          "description": "helps with tests.",
+          "spriteUrl": "/weapon_01.png",
+          "effect": {
+              "name": "eff",
+              "description": "ect",
+              "duration": 5,
+              "strength": 3
+          }
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const location = res.getHeader("location");
+
+        bru.setEnvVar("newly-created-itemi-id", location);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

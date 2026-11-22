@@ -1,0 +1,25 @@
+info:
+  name: create-item-effect-via-id
+  type: http
+  seq: 14
+
+http:
+  method: POST
+  url: "{{SERVER}}/api/items"
+  body:
+    type: json
+    data: |-
+      {
+          "name": "test",
+          "description": "helps with tests.",
+          "spriteUrl": "/weapon_01.png",
+          "effect": {
+              "id": "1"
+          }
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
