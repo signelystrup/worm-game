@@ -1,0 +1,24 @@
+info:
+  name: Create new account
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{SERVER}}/api/account/"
+  body:
+    type: json
+    data: |-
+      {
+        "password": "password",
+        "username": "BrunoErSej",
+        "email": "bruno3@example.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
