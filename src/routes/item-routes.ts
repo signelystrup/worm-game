@@ -1,9 +1,8 @@
 import express from 'express'
 import type { Request } from 'express'
-import * as helpers from '../helpers/route-helper-functions.js'
+import { clamp } from '../helpers/route-helper-functions.js'
 import type { ItemDTO, ItemOptions } from '../dto/item-dto.js';
-import { getItem, getItems } from '../repository/item-repository.js';
-import { createItemInDatabase } from '../service/item-service.js';
+import { createItemInDatabase, readItemsFromDatabase, readItemByIdFromDatabase } from '../service/item-service.js';
 
 const router = express();
 router.use(express.json());
@@ -21,35 +20,41 @@ router.post('/', (req, res) => {
 });
 
 // read
-router.get('/', (req, res) => {
+router.get('/', (req : Request<{}, {}, {}, { page? : number, 
+											 pageSize? : number, 
+											 sortBy? : string, 
+											 sortDirection? : string,
+											 filterName? : string,
+											 filterDescription? : string }>, res) => {
 	// get options from query
 	const options : ItemOptions = {
 		// Pagination
-		itemPage: Math.max(helpers.getQueryInt(req.query.page, 0), 1),
-		itemPageSize: helpers.clamp(helpers.getQueryInt(req.query.pageSize, 10), 1, 100),
+		itemPage: Math.max(req.query.page ?? 1, 1),
+		itemPageSize: clamp(req.query.pageSize ?? 1, 1, 100),
+		
 		// Sorting
 		itemSort: {
-			sortBy: helpers.getQueryString(req.query.sortBy, ""),
+			sortBy: req.query.sortBy ?? "",
 			ascending: getSortDirection(req.query.sortDirection)
 		},
 
 		// Filtering
 		itemFilter: {
-			name: helpers.getQueryString(req.query.filterName, ""),
-			description: helpers.getQueryString(req.query.filterDescription, ""),
+			name: req.query.filterName ?? "",
+			description: req.query.filterDescription ?? "",
 		},
 	}
 
 	// get items from db
-	getItems(options).then((items) => {
+	readItemsFromDatabase(options).then((items) => {
 		res.send({ data: items });
 	});
 
 	// helper function for sort direction
 	// returns true if acending, and false for decending
-	function getSortDirection(value: unknown) : boolean {
+	function getSortDirection(value: string | undefined) : boolean {
 		if (typeof value !== "string")
-		return true;
+			return true;
 		if (value === "dec" || value === "decending" || value === "0" || value === "false")
 			return false;
 		return true;
@@ -59,8 +64,7 @@ router.get('/', (req, res) => {
 // read one item
 router.get('/:itemId', (req: Request<{ itemId: number }>, res) => {
 	const itemId : number = req.params.itemId;
-	getItem(itemId).then((items)=>
-	{
+	readItemByIdFromDatabase(itemId).then((items)=> {
 		if (items.length !== 0)
 			res.status(200).send({ item: items[0] })
 		else
