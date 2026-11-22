@@ -28,12 +28,11 @@ interface CharecterDocument {
 }
 
 async function migrateCharecters() {
-    const mongoClient = new MongoClient('mongodb://localhost:27017');
+    const mongoClient = new MongoClient('mongodb://mongo:secret@localhost:27017/?authSource=admin');
     
     try {
         await mongoClient.connect();
-        console.log('Forbundet til MongoDB...');
-        const mongoDb = mongoClient.db('game_database');
+        const mongoDb = mongoClient.db('worm-game');
         
 
         const charCollection = mongoDb.collection<CharecterDocument>('characters');
@@ -81,3 +80,5 @@ async function migrateCharecters() {
         await mongoClient.close();
     }
 }
+
+migrateCharecters()
