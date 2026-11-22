@@ -1,11 +1,11 @@
 info:
   name: new game
   type: http
-  seq: 2
+  seq: 1
 
 http:
   method: POST
-  url: "{{SERVER}}/character"
+  url: "{{SERVER}}/api/character"
   body:
     type: json
     data: |-
