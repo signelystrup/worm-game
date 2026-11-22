@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { account } from '../../dist/drizzle/schema.js';
+import { account } from '../db/schema.js';
 import db from '../db/connection.js'
 
 import type { Account } from "../db/model.js";
