@@ -1,0 +1,39 @@
+info:
+  name: post new save
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{SERVER}}/api/saves"
+  body:
+    type: json
+    data: |-
+      {
+        "characterId": 1,
+        "inventoryid": 1,
+        "weaponId": 2,
+        "inventory": [
+          {
+            "itemId": 1,
+            "amount": 5
+          },
+          {
+            "itemId": 3,
+            "amount": 2
+          }
+        ],
+        "levelup": {
+          "talentId": 2,
+          "statId": 4
+        },
+        "completedStageId": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

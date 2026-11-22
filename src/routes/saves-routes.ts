@@ -12,6 +12,14 @@ const router = express.Router()
 
 //router routes
 router.post('/api/saves', async (req, res) => {
+    console.log(req.body)
+    if (!req.body) {
+        return res.status(400).json({ 
+            success: false, 
+            message: "Request body is missing" 
+        });
+    }
+
     const saveGameDTO: saveGameDTO = req.body
 
     if (Validator(saveGameDTO, res) !== true) {
