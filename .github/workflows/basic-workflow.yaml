@@ -31,8 +31,8 @@ jobs:
       #- run: npm run build --if-present how about you dont?
 
       - name: Start testing database
-        run: docker compose -f docker-ci-cd-compose.yaml -d build --no-cache; 
-          docker compose -f docker-ci-cd-compose.yaml up 
+        run: docker compose -f docker-ci-cd-compose.yaml build --no-cache; 
+          docker compose -f docker-ci-cd-compose.yaml up -d --wait
 
       - name: Run migrations
         run: npx drizzle-kit migrate
