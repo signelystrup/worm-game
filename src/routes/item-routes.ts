@@ -1,7 +1,5 @@
 import express from 'express'
 import type { ItemDTO } from '../dto/item-dto.js';
-import { verifyItemDTO } from '../dto/item-dto.js';
-//import { createItem } from '../repository/item-repository.js';
 import { createItemInDatabase } from '../service/item-service.js';
 
 const router = express();
