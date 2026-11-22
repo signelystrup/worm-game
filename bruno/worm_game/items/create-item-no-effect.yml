@@ -1,0 +1,22 @@
+info:
+  name: create-item-no-effect
+  type: http
+  seq: 15
+
+http:
+  method: POST
+  url: "{{SERVER}}/api/items"
+  body:
+    type: json
+    data: |-
+      {
+          "name": "test",
+          "description": "helps with tests.",
+          "spriteUrl": "/weapon_01.png"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,22 @@
+info:
+  name: pagination-items
+  type: http
+  seq: 9
+
+http:
+  method: GET
+  url: http://localhost:8080/api/items?page=1&pageSize=1
+  params:
+    - name: page
+      value: "1"
+      type: query
+    - name: pageSize
+      value: "1"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

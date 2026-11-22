@@ -1,0 +1,22 @@
+info:
+  name: filter-items
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: http://localhost:8080/api/items?filterName=fire&filterDescription=ignite
+  params:
+    - name: filterName
+      value: fire
+      type: query
+    - name: filterDescription
+      value: ignite
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
