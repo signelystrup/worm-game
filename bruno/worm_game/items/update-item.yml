@@ -1,0 +1,29 @@
+info:
+  name: update-item
+  type: http
+  seq: 16
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/items/2
+  body:
+    type: json
+    data: |-
+      {
+          "name": "putTest",
+          "description": "helps with tests.",
+          "spriteUrl": "/weapon_01.png",
+          "effect": {
+              "id": 3,
+              "name": "eff",
+              "description": "ect",
+              "duration": 5,
+              "strength": 3
+          }
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

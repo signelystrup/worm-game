@@ -1,0 +1,19 @@
+info:
+  name: filter-items-description
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:8080/api/items?filterDescription=pOiSoN
+  params:
+    - name: filterDescription
+      value: pOiSoN
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

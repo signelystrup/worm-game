@@ -3,3 +3,5 @@ variables:
   - name: SERVER
     value: http://localhost:8080
     description: Worm Game host
+  - name: newly-created-itemi-id
+    value: api/items/4

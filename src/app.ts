@@ -5,6 +5,7 @@ import express from 'express'
 import characterRoutes from './routes/character-routes.js';
 import stageRoutes from './routes/stage-routes.js';
 import accountRoutes from './routes/account-routes.js'
+import itemRoutes from './routes/item-routes.js';
 
 const PORT = 8080 //port of the application 
 const app = express() //we store the express application in app so we can add to it. like routes and middlware. 
@@ -13,6 +14,7 @@ const app = express() //we store the express application in app so we can add to
 app.use('/api/character', characterRoutes);
 app.use('/api/stage', stageRoutes);
 app.use('/api/account', accountRoutes);
+app.use('/api/items', itemRoutes);
 
 //the standard / route send as a javascript object 
 // which is automatically sent as json
