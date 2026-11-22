@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { item, effect, inventoryItem, stageTile } from '../../dist/drizzle/schema.js';
+import { item, effect, inventoryItem, stageTile } from '../db/schema.js';
 import type { ItemDTO } from '../dto/item-dto.js';
 import { clamp } from '../helpers/math-helpers.js'
 import { eq, ilike, and, asc, desc } from "drizzle-orm";
