@@ -10,7 +10,7 @@ router.post('/', async (req: Request, res: Response)  => {
     
     await createNewPlayerCharacter(body.accountId, body.characterName, body.archetypeId);
 
-    res.send(`status: ${req.statusCode}, body: ${body.characterName}`);
+    res.status(200).send(`body: ${body.characterName}`);
 
 
 });
