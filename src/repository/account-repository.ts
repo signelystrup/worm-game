@@ -13,6 +13,16 @@ export async function selectAccountWithId(accountId: number) {
         .where(eq(account.id, accountId)))[0];
 }
 
+export async function selectAccountWithEmail(email: string) {
+    return db.select()
+        .from(account)
+        .where(eq(account.email, email))
+    .then(result => {
+        return [result]
+    }).catch( error => {
+        return "Db query error.\n" + error; 
+    });
+}
 
 export async function insertNewAccount(newAccount: Account) {
     return db.insert(account)
@@ -29,7 +39,7 @@ export async function updateAccount(accountId: number, updatedAccount: Account) 
 
 export async function deleteAccount(accountId: number) {
 
-    // finde character associated with account
+    // find character associated with account
     const characterId :number | null = (await db.select()
         .from(account)
         .where(eq(account.id, accountId)))[0].characterId!;
